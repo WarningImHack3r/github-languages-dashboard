@@ -1,24 +1,108 @@
 <main class="dashboard">
     <header class="header">
         <!-- Statistic of repositories -->
-        <card-stats title="New Repositories of the Day" color="" />
+        
         
         <!-- Statistic of commits -->
-        <card-stats title="New Commits of the Day" color="" />
+        <!-- <card-stats title="New Commits of the Day" [value]="3000" color="red" /> -->
     
         <!-- Statistic of contributors -->
-        <card-stats title="New Contributors of the Day" color="" />
+        <!-- <card-stats title="New Contributors of the Day" [value]="3000" color="blue" /> -->
     
         <!-- Statistic of issues -->
-        <card-stats title="New Issues of the Day" color="" />
+        <!-- <card-stats title="New Issu;es of the Day" [value]="3000" icon="ionAdd" color="green" /> -->
     
     </header>
     
     <section>
-    
-        <!-- Graphic Most Languages used on curbe and histo of repositories -->
-    
-    
-    
+        <mat-tab-group class="sm:px-2" [animationDuration]="'0'">
+                
+            <mat-tab label="General">
+                <ng-template matTabContent>
+                    <div class="mat-tab-container">
+                        <div class="cards">
+                            <card-stats title="New Commits of the Day" [value]="3000" color="red" />
+                            <card-stats title="New Commits of the Day" [value]="3000" color="red" />
+                            <card-stats title="New Commits of the Day" [value]="3000" color="red" />
+                            <card-stats title="New Commits of the Day" [value]="3000" color="red" />
+                        </div>
+
+                        <mat-card>
+                            <mat-card-header>
+                                <mat-card-title>Stacked Area Chart</mat-card-title>
+                                <mat-card-subtitle>Card subtitle</mat-card-subtitle>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <div echarts 
+                                [options]="Stacked_Area_Chart" 
+                                [loading]="isLoading" 
+                                theme="macarons" 
+                                class="demo-chart">
+                            </div>
+                            </mat-card-content>
+                        </mat-card>
+
+                        <div class="thrid-card">
+                            <mat-card>
+                                <mat-card-header>
+                                    <mat-card-title>Doughnut Chart</mat-card-title>
+                                    <mat-card-subtitle>Card subtitle</mat-card-subtitle>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <div echarts 
+                                        [options]="Doughnut_Chart" 
+                                        [loading]="isLoading" 
+                                        theme="macarons" 
+                                        class="demo-chart">
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+
+                            <mat-card >
+                                <mat-card-header>
+                                    <mat-card-title>Gradient Stacked Area Chart</mat-card-title>
+                                    <mat-card-subtitle>Card subtitle</mat-card-subtitle>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <div echarts 
+                                        [options]="Gradient_Stacked_Area_Chart" 
+                                        [loading]="isLoading" 
+                                        theme="macarons" 
+                                        class="demo-chart">
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                        
+                    </div>
+                </ng-template>
+            </mat-tab>
+
+            <mat-tab label="Front-End">
+                <ng-template matTabContent>
+                    <div>
+                        <h1>Front-End</h1>
+                    </div>
+                </ng-template>
+            </mat-tab>
+
+            <mat-tab label="Back-End">
+                <ng-template matTabContent>
+                    <div>
+                        <h1>Back-End</h1>
+                    </div>
+                </ng-template>
+            </mat-tab>
+
+            <mat-tab label="DataBase">
+                <ng-template matTabContent>
+                    <div>
+                        <h1>DataBase</h1>
+                    </div>
+                </ng-template>
+            </mat-tab>
+
+
+        </mat-tab-group>
     </section>
 </main>

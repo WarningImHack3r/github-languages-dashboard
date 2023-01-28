@@ -17,3 +17,28 @@
     margin: 20px;
 } 
 
+.mat-tab-container {
+    margin: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+
+    .cards {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 32px;
+    }
+    
+}
+
+.thrid-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 32px;
+
+    mat-card {
+        width: 100%;
+    }
+}
