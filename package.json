@@ -23,6 +23,7 @@
     "@ng-icons/core": "^23.1.0",
     "@ng-icons/heroicons": "^23.1.0",
     "@ng-icons/octicons": "^23.1.0",
+    "@octokit/graphql": "^5.0.5",
     "echarts": "^5.4.1",
     "ngx-echarts": "^15.0.1",
     "rxjs": "~7.8.0",
