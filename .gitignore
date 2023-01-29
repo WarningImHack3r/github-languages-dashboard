@@ -8,6 +8,7 @@
 
 # Node
 /node_modules
+.angular/cache
 npm-debug.log
 yarn-error.log
 
@@ -29,7 +30,6 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
-/.angular/cache
 .sass-cache/
 /connect.lock
 /coverage
@@ -40,3 +40,13 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Protractor configuration file
+/protractor.conf.js
+
+# Karma configuration file
+/karma.conf.js
+
+# Environment variables
+.env
+src/environments/enviroment.ts

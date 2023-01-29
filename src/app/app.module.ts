@@ -3,10 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NgxEchartsModule } from 'ngx-echarts';
-import { NgIconsModule } from '@ng-icons/core';
-import { bootstrapCoin } from '@ng-icons/bootstrap-icons';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { GraphQLModule } from './graphql.module';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent
@@ -15,6 +14,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    GraphQLModule,
+    HttpClientModule,
     
   ],
   providers: [],

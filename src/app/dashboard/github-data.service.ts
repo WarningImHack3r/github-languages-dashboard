@@ -1,19 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { graphql } from "@octokit/graphql";
-import type { GraphQlQueryResponseData } from "@octokit/graphql";
+import { Apollo, gql } from 'apollo-angular';
+import { ApolloQueryResult } from '@apollo/client/core';
 
 @Injectable({
   providedIn: "root"
 })
 export class GithubDataService {
-  graphqlWithAuth = graphql.defaults({
-    headers: {
-      authorization: `token ${process.env.GITHUB_TOKEN}` // TODO: how to inject this token?
-    }
-  });
 
-  constructor() {}
+  constructor(
+    private apollo: Apollo
+  ) {
+    
+  }
 
   getGithubData(): Observable<any> {
     const data = {
@@ -25,20 +24,49 @@ export class GithubDataService {
     return of(data);
   }
 
-  async getRepo(owner: string, repo: string): Promise<Observable<any>> {
-    // TODO: how to console.log to test this function?
-    const { repository } = await this.graphqlWithAuth<GraphQlQueryResponseData>({
-      query: `
-        query {
+  // async getRepo(owner: string, repo: string): Promise<any> {
+  //   // TODO: how to console.log to test this function?
+  //   const { repository } = await this.graphqlWithAuth<GraphQlQueryResponseData>({
+  //     query: `
+  //       query {
+  //         repository(owner: $owner, name: $repo) {
+  //           name
+  //           url
+  //         }
+  //       }
+  //     `,
+  //     owner: owner,
+  //     repo: repo
+  //   });
+  //   return repository; // TODO: is this the right way to return the data?
+  // }
+
+  getRepo(owner: string, repo: string): Observable<any> {
+    return this.apollo.watchQuery<any>({
+      query: gql`
+        query ($owner: String!, $repo: String!){
           repository(owner: $owner, name: $repo) {
             name
             url
           }
         }
       `,
-      owner: owner,
-      repo: repo
-    });
-    return of(repository); // TODO: is this the right way to return the data?
+      variables: {
+        owner: owner,
+        repo: repo
+      }
+    }).valueChanges;
+  }
+
+  getWhoIAm(): Observable<any> {
+    return this.apollo.watchQuery<string>({
+      query: gql`
+        query {
+          viewer {
+            login
+          }
+        }
+      `
+    }).valueChanges;
   }
 }

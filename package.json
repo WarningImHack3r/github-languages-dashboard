@@ -23,12 +23,14 @@
     "@ng-icons/core": "^23.1.0",
     "@ng-icons/heroicons": "^23.1.0",
     "@ng-icons/octicons": "^23.1.0",
-    "@octokit/graphql": "^5.0.5",
     "echarts": "^5.4.1",
     "ngx-echarts": "^15.0.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.12.0"
+    "zone.js": "~0.12.0",
+    "apollo-angular": "^4.2.0",
+    "@apollo/client": "^3.0.0",
+    "graphql": "^16"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.1.2",

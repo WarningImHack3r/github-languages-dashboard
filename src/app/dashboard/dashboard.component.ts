@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GithubDataService } from './github-data.service';
 import * as echarts from 'echarts';
+import { ApolloQueryResult } from '@apollo/client/core';
 
 type EChartsOption = echarts.EChartsOption;
 
@@ -12,7 +13,7 @@ type EChartsOption = echarts.EChartsOption;
 export class DashboardComponent implements OnInit {
   
   repositories: any;
-  isLoading = false;
+  isLoading = true;
   Stacked_Area_Chart: EChartsOption = {
     tooltip: {
       trigger: 'axis',
@@ -310,21 +311,21 @@ export class DashboardComponent implements OnInit {
       }
     ]
   };
-  
 
   constructor(
     private githubDataService: GithubDataService
   ) {
     this.isLoading = true;
-    this.githubDataService.getGithubData().subscribe(data => {
-      console.log(data);
-      // delay 1 second
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 2000);
+    this.githubDataService.getWhoIAm().subscribe((result: ApolloQueryResult<string>) => {
+      console.log(result);
+      this.isLoading = result.loading;
     });
 
-    this.repositories = {
+    this.githubDataService.getRepo('MinixBF', 'brad-immo').subscribe((data) => {
+      console.log(data);
+    });
+
+    this.repositories = {  
       "total_count": 1,
       "incomplete_results": false,
       "items": [
@@ -337,12 +338,7 @@ export class DashboardComponent implements OnInit {
         }
       ]
     }
-
-    
   }
-
-  
-
 
   ngOnInit(): void {
     
