@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { GithubDataService } from './github-data.service';
 import * as echarts from 'echarts';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 type EChartsOption = echarts.EChartsOption;
 
@@ -13,6 +16,12 @@ export class DashboardComponent implements OnInit {
   repositories: any;
   isLoading = true;
   displayedColumns: string[] = ['name', 'value', 'percent'];
+
+  displayedColumnsTopTenLanguages: string[] = ['owner', 'name', 'stargazers'];
+  dataSourceTopTenLanguages = new MatTableDataSource<any>([{},{},{},{},{},{},{},{},{},{}]);
+  @ViewChild(MatPaginator) paginator!: MatPaginator ;
+  @ViewChild(MatSort) sort!: MatSort;
+
   dataSource: any = [
     {name: 'X-1', value: 0, percent: 0},
     {name: 'X-2', value: 0, percent: 0},
@@ -321,11 +330,18 @@ export class DashboardComponent implements OnInit {
     ]
   };
 
-  constructor(private githubDataService: GithubDataService) {
+
+  constructor(
+    private githubDataService: GithubDataService,
+    private _changeDetector: ChangeDetectorRef,
+    ) {
     this.isLoading = true;
     this.githubDataService.getTopRepos(100).subscribe(result => {
+      console.log(result);
       this.isLoading = result.loading;
-      // console.log("getAllRepos", result);
+      this.dataSourceTopTenLanguages = new MatTableDataSource(result);
+      this.dataSourceTopTenLanguages.paginator = this.paginator;
+      this.dataSourceTopTenLanguages.sort = this.sort;
     });
 
     this.githubDataService.getTopLanguages(100).subscribe(data => {
@@ -339,4 +355,9 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
 }

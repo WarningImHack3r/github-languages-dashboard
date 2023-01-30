@@ -44,7 +44,7 @@ export class GithubDataService {
       }
     }).valueChanges.pipe(map(result => result.data["__type"])); }
 
-  getTopRepos(limit: number): Observable<ApolloQueryResult<any>> {
+  getTopRepos(limit: number): Observable<any> {
     return this.apollo.watchQuery<any>({
       query: gql`
         query($limit: Int!) {

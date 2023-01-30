@@ -4,8 +4,6 @@ import { CommonModule } from '@angular/common';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
 import { CardStatsComponent } from './components/card-stats/card-stats.component';
-import { NgIconsModule } from '@ng-icons/core';
-import * as bootstrap from '@ng-icons/bootstrap-icons';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
@@ -14,8 +12,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 @NgModule({
-  declarations: [ 
+  declarations: [
     DashboardComponent,
     CardStatsComponent
   ],
@@ -30,8 +29,8 @@ import { MatTableModule } from '@angular/material/table';
     MatSelectModule,
     MatIconModule,
     MatTableModule,
-    
-    NgIconsModule.withIcons({ ...bootstrap }),
+    MatPaginatorModule,
+
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'),
     }),
