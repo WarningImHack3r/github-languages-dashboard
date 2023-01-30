@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Apollo, gql } from 'apollo-angular';
-import { ApolloQueryResult } from "@apollo/client/core";
 
 @Injectable({
   providedIn: "root"
@@ -10,7 +9,7 @@ export class GithubDataService {
 
   constructor(private apollo: Apollo) {}
 
-  getInfoOnSchema(): Observable<ApolloQueryResult<any>> {
+  getInfoOnSchema(): Observable<any> {
     return this.apollo.watchQuery<any>({
       query: gql`
         query {
@@ -24,7 +23,7 @@ export class GithubDataService {
     }).valueChanges.pipe(map(result => result.data["__schema"].types));
   }
 
-  getInfoOnType(typeName: string): Observable<ApolloQueryResult<any>> {
+  getInfoOnType(typeName: string): Observable<any> {
       return this.apollo.watchQuery<any>({
       query: gql`
         query($typeName: String!) {
@@ -71,7 +70,7 @@ export class GithubDataService {
     );
   }
 
-  getTopLanguages(limit: number): Observable<ApolloQueryResult<any>> {
+  getTopLanguages(limit: number): Observable<any> {
     return this.apollo.watchQuery<any>({
       query: gql`
         query($limit: Int!) {
@@ -99,66 +98,23 @@ export class GithubDataService {
         limit: limit
       }
     }).valueChanges.pipe(
-      map(result => result.data["search"].nodes),
-      map(repos => repos.reduce((acc: any, repo: any) => {
-        // a fix
-        const language = repo.languages.name;
-        if (acc[language]) {
-          acc[language] += 1;
-        } else {
-          acc[language] = 1;
-        }
-        return acc;
-      }, {}))
-    );
-  }
-
-  getTopContributors(limit: number): Observable<ApolloQueryResult<any>> {
-    return this.apollo.watchQuery<any>({
-      query: gql`
-        query($limit: Int!) {
-          search(query: "stars:>10000", type: REPOSITORY, first: $limit) {
-            nodes {
-              ... on Repository {
-                owner {
-                  login
-                }
-                name
-                stargazers {
-                  totalCount
-                }
-                collaborators(first: 10) {
-                  edges {
-                    node {
-                      login
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      `,
-      variables: {
-        limit: limit
-      }
-    }).valueChanges.pipe(
-      map(result => result.data["search"].nodes),
-      map(repos => repos.reduce((acc: any, repo: any) => {
-        // marche pas
-        repo.collaborators.nodes.forEach((contributor: any) => {
-          if (acc[contributor.login]) {
-            acc[contributor.login] += 1;
+      map(result => result.data["search"].nodes
+        .map((repo: any) => repo.languages.nodes[0])
+        .filter((lang: any) => lang !== undefined)
+        .map((lang: any) => lang.name)
+        .reduce((acc: any, lang: any) => {
+          if (acc[lang]) {
+            acc[lang] += 1;
           } else {
-            acc[contributor.login] = 1;
+            acc[lang] = 1;
           }
-        });
-        return acc;
-      }))
+          return acc;
+        }, {})
+      )
     );
   }
 
-  getMostUsedIDEs(limit: number): Observable<ApolloQueryResult<any>> {
+  getMostUsedIDEs(limit: number): Observable<any> {
     return this.apollo.watchQuery<any>({
       query: gql`
         query($limit: Int!) {
@@ -188,146 +144,53 @@ export class GithubDataService {
         limit: limit
       }
     }).valueChanges.pipe(
-      map(result => result.data["search"].nodes),
-      map(repos => repos.reduce((acc: any, repo: any) => {
-        // pb de foreach
-        repo.object.entries.forEach((entry: any) => {
-          if (entry.name === ".vscode") {
-            if (acc["VSCode"]) {
-              acc["VSCode"] += 1;
-            } else {
-              acc["VSCode"] = 1;
-            }
-          } else if (entry.name === ".idea") {
-            if (acc["IntelliJ"]) {
-              acc["IntelliJ"] += 1;
-            } else {
-              acc["IntelliJ"] = 1;
-            }
-          } else if (entry.name === ".project") {
-            if (acc["Eclipse"]) {
-              acc["Eclipse"] += 1;
-            } else {
-              acc["Eclipse"] = 1;
-            }
-          } else if (entry.name.includes(".xcodeproj")) {
-            if (acc["XCode"]) {
-              acc["XCode"] += 1;
-            } else {
-              acc["XCode"] = 1;
-            }
-          } else {
-            if (acc["Other"]) {
-              acc["Other"] += 1;
-            } else {
-              acc["Other"] = 1;
-            }
-          }
-        });
-        return acc;
-      }, {}))
-    );
-  }
-
-  getAppleLanguagesCount(limit: number): Observable<ApolloQueryResult<any>> {
-    return this.apollo.watchQuery<any>({
-      query: gql`
-        query($limit: Int!) {
-          search(query: "stars:>10000", type: REPOSITORY, first: $limit) {
-            nodes {
-              ... on Repository {
-                owner {
-                  login
-                }
-                name
-                stargazers {
-                  totalCount
-                }
-                languages(first: 10) {
-                  nodes {
-                    name
-                  }
-                }
+      map(result => result.data["search"].nodes
+        .map((repo: any) => repo.object)
+        .filter((obj: any) => obj !== null)
+        .map((obj: any) => obj.entries)
+        .reduce((acc: any, entries: any) => {
+          entries.forEach((entry: any) => {
+            if (entry.name === ".vscode") {
+              if (acc["VSCode"]) {
+                acc["VSCode"] += 1;
+              } else {
+                acc["VSCode"] = 1;
               }
-            }
-          }
-        }
-      `,
-      variables: {
-        limit: limit
-      }
-    }).valueChanges.pipe(
-      map(result => result.data["search"].nodes),
-      map(repos => {
-        // marche mais pas ce que je voulais
-        const languages = repos.reduce((acc: any, repo: any) => {
-          repo.languages.nodes.forEach((language: any) => {
-            if (acc[language.name]) {
-              acc[language.name] += 1;
+            } else if (entry.name === ".idea") {
+              if (acc["IntelliJ"]) {
+                acc["IntelliJ"] += 1;
+              } else {
+                acc["IntelliJ"] = 1;
+              }
+            } else if (entry.name.endsWith(".xcodeproj")) {
+              if (acc["XCode"]) {
+                acc["XCode"] += 1;
+              } else {
+                acc["XCode"] = 1;
+              }
             } else {
-              acc[language.name] = 1;
+              if (acc["Other"]) {
+                acc["Other"] += 1;
+              } else {
+                acc["Other"] = 1;
+              }
             }
           });
           return acc;
-        }, {});
-        return Object.keys(languages).reduce((acc: any, language: any) => {
-          if (language.includes("Swift") || language.includes("Objective-C")) {
-            acc[language] = languages[language];
-          }
-          return acc;
-        }, {});
-      })
+        }, {})
+      )
     );
   }
 
-  getAndroidLanguagesCount(limit: number): Observable<ApolloQueryResult<any>> {
-    return this.apollo.watchQuery<any>({
-      query: gql`
-        query($limit: Int!) {
-          search(query: "stars:>10000", type: REPOSITORY, first: $limit) {
-            nodes {
-              ... on Repository {
-                owner {
-                  login
-                }
-                name
-                stargazers {
-                  totalCount
-                }
-                languages(first: 10) {
-                  nodes {
-                    name
-                  }
-                }
-              }
-            }
-          }
-        }
-      `,
-      variables: {
-        limit: limit
-      }
-    }).valueChanges.pipe(
-      map(result => result.data["search"].nodes),
-      map(repos => {
-        // pareil hein
-        const languages = repos.reduce((acc: any, repo: any) => {
-          repo.languages.nodes.forEach((language: any) => {
-            if (acc[language.name]) {
-              acc[language.name] += 1;
-            } else {
-              acc[language.name] = 1;
-            }
-          });
-          return acc;
-        }, {});
-        return Object.keys(languages).reduce((acc: any, language: any) => {
-          if (language.includes("Java") || language.includes("Kotlin")) {
-            acc[language] = languages[language];
-          }
-          return acc;
-        }, {});
-      })
+  getAppleLanguagesCount(limit: number): Observable<any> {
+    return this.getTopLanguages(limit).pipe(
+      map((languages: any) => (languages["Swift"] || 0) + (languages["Objective-C"] || 0) + (languages["Objective-C++"] || 0))
+    );
+  }
+
+  getAndroidLanguagesCount(limit: number): Observable<any> {
+    return this.getTopLanguages(limit).pipe(
+      map((languages: any) => (languages["Java"] || 0) + (languages["Kotlin"] || 0))
     );
   }
 }
