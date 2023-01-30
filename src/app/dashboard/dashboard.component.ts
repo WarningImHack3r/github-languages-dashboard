@@ -323,24 +323,14 @@ export class DashboardComponent implements OnInit {
 
   constructor(private githubDataService: GithubDataService) {
     this.isLoading = true;
-    this.githubDataService.getWhoAmI().subscribe(result => {
+    this.githubDataService.getTopRepos(100).subscribe(result => {
       this.isLoading = result.loading;
-      console.log("whoAmI", result);
+      // console.log("getAllRepos", result);
     });
 
-    this.githubDataService.getRepo("MinixBF", "brad-immo").subscribe(data => {
+    this.githubDataService.getTopLanguages(100).subscribe(data => {
       this.isLoading = data.loading;
-      console.log("Repo info", data);
-    });
-
-    this.githubDataService.getInfoOnSchema().subscribe(data => {
-      this.isLoading = data.loading;
-      console.log("Info on schema", data);
-    });
-
-    this.githubDataService.getInfoOnType("Repository").subscribe(data => {
-      this.isLoading = data.loading;
-      console.log("Info on type Repository", data);
+      console.log(data);
     });
 
     // array of years from 2008 (creation of GitHub) to today
