@@ -1,108 +1,289 @@
 <main class="dashboard">
     <header class="header">
-        <!-- Statistic of repositories -->
-        
-        
-        <!-- Statistic of commits -->
-        <!-- <card-stats title="New Commits of the Day" [value]="3000" color="red" /> -->
-    
-        <!-- Statistic of contributors -->
-        <!-- <card-stats title="New Contributors of the Day" [value]="3000" color="blue" /> -->
-    
-        <!-- Statistic of issues -->
-        <!-- <card-stats title="New Issu;es of the Day" [value]="3000" icon="ionAdd" color="green" /> -->
+       
     
     </header>
     
-    <section>
-        <mat-tab-group class="sm:px-2" [animationDuration]="'0'">
+    <section class="container">
+        
+        <!-- 
+            First section : Top 10 languages
+            PARAM: Year selection 
+            1. list of languages
+            2. graph of languages 
+        
+            Evolution of the languages during the year
+            1. graph of languages
+        -->
+
+        <mat-card>
+            <mat-card-header class="top-languages-header">
+                <mat-card-title>Top 10 Languages</mat-card-title>
+                <mat-card-subtitle>Card subtitle</mat-card-subtitle>
+                <mat-form-field appearance="outline">
+                    <mat-label>Year</mat-label>
+                    <mat-select [(value)]="selectedYear">
+                        <mat-option *ngFor="let year of years" [value]="year">
+                            {{year}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="top-languages-content">
+                    <div>
+                        <!-- MatTablee -->
+                         <mat-table [dataSource]="dataSource" >
+                             <ng-container matColumnDef="name">
+                                 <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                                 <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                             </ng-container>
+                             <ng-container matColumnDef="value">
+                                 <mat-header-cell *matHeaderCellDef> Value </mat-header-cell>
+                                 <mat-cell *matCellDef="let element"> {{element.value}} </mat-cell>
+                             </ng-container>
+                             <ng-container matColumnDef="percent">
+                                 <mat-header-cell *matHeaderCellDef> Percent </mat-header-cell>
+                                 <mat-cell *matCellDef="let element"> {{element.percent}} </mat-cell>
+                             </ng-container>
+                             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                         </mat-table>
+     
+                     </div>
+     
+                     <div echarts 
+                         [options]="Stacked_Area_Chart" 
+                         [loading]="isLoading" 
+                         theme="macarons" 
+                         class="chart">
+                     </div>
+     
+                </div>
                 
-            <mat-tab label="General">
-                <ng-template matTabContent>
-                    <div class="mat-tab-container">
-                        <div class="cards">
-                            <card-stats title="New Commits of the Day" [value]="3000" color="red" />
-                            <card-stats title="New Commits of the Day" [value]="3000" color="red" />
-                            <card-stats title="New Commits of the Day" [value]="3000" color="red" />
-                            <card-stats title="New Commits of the Day" [value]="3000" color="red" />
-                        </div>
-
-                        <mat-card>
-                            <mat-card-header>
-                                <mat-card-title>Stacked Area Chart</mat-card-title>
-                                <mat-card-subtitle>Card subtitle</mat-card-subtitle>
-                            </mat-card-header>
-                            <mat-card-content>
-                                <div echarts 
-                                [options]="Stacked_Area_Chart" 
-                                [loading]="isLoading" 
-                                theme="macarons" 
-                                class="demo-chart">
-                            </div>
-                            </mat-card-content>
-                        </mat-card>
-
-                        <div class="thrid-card">
-                            <mat-card>
-                                <mat-card-header>
-                                    <mat-card-title>Doughnut Chart</mat-card-title>
-                                    <mat-card-subtitle>Card subtitle</mat-card-subtitle>
-                                </mat-card-header>
-                                <mat-card-content>
-                                    <div echarts 
-                                        [options]="Doughnut_Chart" 
-                                        [loading]="isLoading" 
-                                        theme="macarons" 
-                                        class="demo-chart">
-                                    </div>
-                                </mat-card-content>
-                            </mat-card>
-
-                            <mat-card >
-                                <mat-card-header>
-                                    <mat-card-title>Gradient Stacked Area Chart</mat-card-title>
-                                    <mat-card-subtitle>Card subtitle</mat-card-subtitle>
-                                </mat-card-header>
-                                <mat-card-content>
-                                    <div echarts 
-                                        [options]="Gradient_Stacked_Area_Chart" 
-                                        [loading]="isLoading" 
-                                        theme="macarons" 
-                                        class="demo-chart">
-                                    </div>
-                                </mat-card-content>
-                            </mat-card>
-                        </div>
-                        
+                <div class="languages-evolution">
+                    <div echarts 
+                        [options]="Stacked_Area_Chart" 
+                        [loading]="isLoading" 
+                        theme="macarons" 
+                        class="chart">
                     </div>
-                </ng-template>
-            </mat-tab>
+                </div>
+            </mat-card-content>
+        </mat-card>
 
-            <mat-tab label="Front-End">
-                <ng-template matTabContent>
-                    <div>
-                        <h1>Front-End</h1>
-                    </div>
-                </ng-template>
-            </mat-tab>
+        <!-- 
+            Second section : Top Repositories 
+            PARAM: Year selection
+            1. Multiple card inline (Top Issue / Top Fork / Top Pull Request)
+            2. Graph of the evolution of the top repositories
+            3. List of the top repositories
+            4. Liscences of the top repositories
+        -->
 
-            <mat-tab label="Back-End">
-                <ng-template matTabContent>
-                    <div>
-                        <h1>Back-End</h1>
-                    </div>
-                </ng-template>
-            </mat-tab>
+        <mat-card>
+            <mat-card-header class="top-ten-header">
+                <mat-card-title>Top 10 Languages</mat-card-title>
+                <mat-card-subtitle>Card subtitle</mat-card-subtitle>
+                <mat-form-field appearance="outline">
+                    <mat-label>Year</mat-label>
+                    <mat-select [(value)]="selectedYear">
+                        <mat-option *ngFor="let year of years" [value]="year">
+                            {{year}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-card-header>
+            <mat-card-content >
+                <!-- 1. Multiple card inline (Top Issue / Top Fork / Top Pull Request) -->
+                <div class="top-languages-content">
+                    <card-stats title="Top Issue" [value]="200" />
+                    <card-stats title="Top Fork" [value]="200" />
+                    <card-stats title="Top Pull Request" [value]="200" />
+                    <card-stats title="Top Issue" [value]="200" />
+                </div>
 
-            <mat-tab label="DataBase">
-                <ng-template matTabContent>
-                    <div>
-                        <h1>DataBase</h1>
-                    </div>
-                </ng-template>
-            </mat-tab>
+                <!-- 2. Graph of the evolution of the top repositories -->
+                <div echarts 
+                    [options]="Stacked_Area_Chart" 
+                    [loading]="isLoading" 
+                    theme="macarons" 
+                    class="chart">
+                </div>
+
+                <!-- 3. List of the top repositories -->
+                <div class="top-repositories-list">
+                    <mat-table [dataSource]="dataSource" >
+                        <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="value">
+                            <mat-header-cell *matHeaderCellDef> Value </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.value}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="percent">
+                            <mat-header-cell *matHeaderCellDef> Percent </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.percent}} </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+                </div>
+
+                <!-- 4. Liscences of the top repositories -->
+                <div class="top-repositories-licenses">
+                    <mat-table [dataSource]="dataSource" >
+                        <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="value">
+                            <mat-header-cell *matHeaderCellDef> Value </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.value}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="percent">
+                            <mat-header-cell *matHeaderCellDef> Percent </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.percent}} </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+                </div>
+
+            </mat-card-content>
+        </mat-card>
+
+        <!-- 
+            Third section : Top Contributors
+            PARAM: Year selection
+            1. List of the top contributors
+        -->
+
+        <mat-card>
+            <mat-card-header class="top-ten-header">
+                <mat-card-title>Top 10 Contributors</mat-card-title>
+                <mat-card-subtitle>Card subtitle</mat-card-subtitle>
+                <mat-form-field appearance="outline">
+                    <mat-label>Year</mat-label>
+                    <mat-select [(value)]="selectedYear">
+                        <mat-option *ngFor="let year of years" [value]="year">
+                            {{year}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-card-header>
+            <mat-card-content >
+                <div class="top-contributors-list">
+                    <mat-table [dataSource]="dataSource" >
+                        <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="value">
+                            <mat-header-cell *matHeaderCellDef> Value </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.value}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="percent">
+                            <mat-header-cell *matHeaderCellDef> Percent </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.percent}} </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- 
+            Fourth section : Top Organizations
+            PARAM: Year selection
+            1. List of the top organizations
+        -->
+
+        <mat-card>
+            <mat-card-header class="top-ten-header">
+                <mat-card-title>Top 10 Organizations</mat-card-title>
+                <mat-card-subtitle>Card subtitle</mat-card-subtitle>
+                <mat-form-field appearance="outline">
+                    <mat-label>Year</mat-label>
+                    <mat-select [(value)]="selectedYear">
+                        <mat-option *ngFor="let year of years" [value]="year">
+                            {{year}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-card-header>
+            <mat-card-content >
+                <div class="top-organizations-list">
+                    <mat-table [dataSource]="dataSource" >
+                        <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="value">
+                            <mat-header-cell *matHeaderCellDef> Value </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.value}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="percent">
+                            <mat-header-cell *matHeaderCellDef> Percent </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.percent}} </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+                </div>
+            </mat-card-content> 
+        </mat-card>
 
 
-        </mat-tab-group>
+        <!-- 
+            Fifth section : Top Ide
+            PARAM: Year selection
+            1. List of the top ide
+            2. Pie chart of the top ide
+        -->
+
+        <mat-card>
+            <mat-card-header class="top-ten-header">
+                <mat-card-title>Top 10 IDE</mat-card-title>
+                <mat-card-subtitle>Card subtitle</mat-card-subtitle>
+                <mat-form-field appearance="outline">
+                    <mat-label>Year</mat-label>
+                    <mat-select [(value)]="selectedYear">
+                        <mat-option *ngFor="let year of years" [value]="year">
+                            {{year}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-card-header>
+            <mat-card-content  >
+                <div class="top-ide-list">
+                    <mat-table [dataSource]="dataSource" >
+                        <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="value">
+                            <mat-header-cell *matHeaderCellDef> Value </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.value}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="percent">
+                            <mat-header-cell *matHeaderCellDef> Percent </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.percent}} </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+                </div>
+                <div echarts 
+                    [options]="Doughnut_Chart" 
+                    [loading]="isLoading" 
+                    theme="macarons" 
+                    class="chart">
+                </div>
+            </mat-card-content>
+        </mat-card>
+        
     </section>
 </main>

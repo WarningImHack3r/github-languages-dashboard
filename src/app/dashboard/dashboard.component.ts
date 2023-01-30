@@ -14,6 +14,17 @@ export class DashboardComponent implements OnInit {
   
   repositories: any;
   isLoading = true;
+  displayedColumns: string[] = ['name', 'value', 'percent'];
+  dataSource: any = [
+    {name: 'X-1', value: 0, percent: 0},
+    {name: 'X-2', value: 0, percent: 0},
+    {name: 'X-3', value: 0, percent: 0},
+  ];
+  years: number[] = [];
+  selectedYear: number = 0;
+
+
+
   Stacked_Area_Chart: EChartsOption = {
     tooltip: {
       trigger: 'axis',
@@ -325,19 +336,8 @@ export class DashboardComponent implements OnInit {
       console.log(data);
     });
 
-    this.repositories = {  
-      "total_count": 1,
-      "incomplete_results": false,
-      "items": [
-        {
-          title: "Angular",
-          subtitle: "Angular is a development platform for building mobile and desktop web applications",
-          value: 3000000,
-          icon: "fa fa-github",
-          color: "#dd0031",
-        }
-      ]
-    }
+    // generate years from today to 2010
+    this.years = Array.from(new Array(11), (val, index) => new Date().getFullYear() - index);
   }
 
   ngOnInit(): void {

@@ -17,6 +17,31 @@
     margin: 20px;
 } 
 
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin: 32px;
+}
+
+.top-languages-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 32px;
+
+    .chart {
+        width: 100%;
+    }
+}
+
+.top-languages-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 32px;
+}
+
 .mat-tab-container {
     margin: 32px;
     display: flex;
