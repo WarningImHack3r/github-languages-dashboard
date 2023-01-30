@@ -1,50 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Apollo, gql } from 'apollo-angular';
-import { ApolloQueryResult } from '@apollo/client/core';
+import { GraphQlQueryResponseData } from "@octokit/graphql";
+import { ApolloQueryResult } from "@apollo/client/core";
 
 @Injectable({
   providedIn: "root"
 })
 export class GithubDataService {
 
-  constructor(
-    private apollo: Apollo
-  ) {
-    
-  }
+  constructor(private apollo: Apollo) {}
 
-  getGithubData(): Observable<any> {
-    const data = {
-      name: 'John',
-      age: 30,
-      car: 'Ford'
-    };
-
-    return of(data);
-  }
-
-  // async getRepo(owner: string, repo: string): Promise<any> {
-  //   // TODO: how to console.log to test this function?
-  //   const { repository } = await this.graphqlWithAuth<GraphQlQueryResponseData>({
-  //     query: `
-  //       query {
-  //         repository(owner: $owner, name: $repo) {
-  //           name
-  //           url
-  //         }
-  //       }
-  //     `,
-  //     owner: owner,
-  //     repo: repo
-  //   });
-  //   return repository; // TODO: is this the right way to return the data?
-  // }
-
-  getRepo(owner: string, repo: string): Observable<any> {
-    return this.apollo.watchQuery<any>({
+  getRepo(owner: string, repo: string): Observable<ApolloQueryResult<GraphQlQueryResponseData>> {
+    return this.apollo.watchQuery<GraphQlQueryResponseData>({
       query: gql`
-        query ($owner: String!, $repo: String!){
+        query($owner: String!, $repo: String!) {
           repository(owner: $owner, name: $repo) {
             name
             url
@@ -55,11 +25,11 @@ export class GithubDataService {
         owner: owner,
         repo: repo
       }
-    }).valueChanges;
+    }).valueChanges.pipe(map(result => result.data["repository"]));
   }
 
-  getWhoIAm(): Observable<any> {
-    return this.apollo.watchQuery<string>({
+  getWhoAmI(): Observable<ApolloQueryResult<GraphQlQueryResponseData>> {
+    return this.apollo.watchQuery<GraphQlQueryResponseData>({
       query: gql`
         query {
           viewer {
@@ -67,6 +37,6 @@ export class GithubDataService {
           }
         }
       `
-    }).valueChanges;
+    }).valueChanges.pipe(map(result => result.data["viewer"].login));
   }
 }

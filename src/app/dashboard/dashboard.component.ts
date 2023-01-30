@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GithubDataService } from './github-data.service';
 import * as echarts from 'echarts';
-import { ApolloQueryResult } from '@apollo/client/core';
 
 type EChartsOption = echarts.EChartsOption;
 
@@ -11,7 +10,6 @@ type EChartsOption = echarts.EChartsOption;
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  
   repositories: any;
   isLoading = true;
   displayedColumns: string[] = ['name', 'value', 'percent'];
@@ -278,7 +276,7 @@ export class DashboardComponent implements OnInit {
       }
     ]
   };
-  
+
   Doughnut_Chart: EChartsOption = {
     tooltip: {
       trigger: 'item'
@@ -323,25 +321,22 @@ export class DashboardComponent implements OnInit {
     ]
   };
 
-  constructor(
-    private githubDataService: GithubDataService
-  ) {
+  constructor(private githubDataService: GithubDataService) {
     this.isLoading = true;
-    this.githubDataService.getWhoIAm().subscribe((result: ApolloQueryResult<string>) => {
-      console.log(result);
+    this.githubDataService.getWhoAmI().subscribe(result => {
       this.isLoading = result.loading;
+      console.log(result);
     });
 
-    this.githubDataService.getRepo('MinixBF', 'brad-immo').subscribe((data) => {
+    this.githubDataService.getRepo("MinixBF", "brad-immo").subscribe(data => {
+      this.isLoading = data.loading;
       console.log(data);
     });
 
-    // generate years from today to 2010
-    this.years = Array.from(new Array(11), (val, index) => new Date().getFullYear() - index);
+    // array of years from 2010 to today
+    const initialYear = 2010;
+    this.years = Array.from({ length: new Date().getFullYear() - initialYear }, (val, index) => index + initialYear);
   }
 
-  ngOnInit(): void {
-    
-  }
-
+  ngOnInit() {}
 }
