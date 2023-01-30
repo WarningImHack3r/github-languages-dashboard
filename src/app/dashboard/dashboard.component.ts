@@ -325,17 +325,27 @@ export class DashboardComponent implements OnInit {
     this.isLoading = true;
     this.githubDataService.getWhoAmI().subscribe(result => {
       this.isLoading = result.loading;
-      console.log(result);
+      console.log("whoAmI", result);
     });
 
     this.githubDataService.getRepo("MinixBF", "brad-immo").subscribe(data => {
       this.isLoading = data.loading;
-      console.log(data);
+      console.log("Repo info", data);
     });
 
-    // array of years from 2010 to today
-    const initialYear = 2010;
-    this.years = Array.from({ length: new Date().getFullYear() - initialYear }, (val, index) => index + initialYear);
+    this.githubDataService.getInfoOnSchema().subscribe(data => {
+      this.isLoading = data.loading;
+      console.log("Info on schema", data);
+    });
+
+    this.githubDataService.getInfoOnType("Repository").subscribe(data => {
+      this.isLoading = data.loading;
+      console.log("Info on type Repository", data);
+    });
+
+    // array of years from 2008 (creation of GitHub) to today
+    const initialYear = 2008;
+    this.years = Array.from({ length: new Date().getFullYear() - initialYear + 1 }, (val, index) => index + initialYear);
   }
 
   ngOnInit() {}

@@ -38,6 +38,14 @@
             "scripts": []
           },
           "configurations": {
+            "hmr": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.hmr.ts"
+                }
+              ]
+            },
             "production": {
               "budgets": [
                 {
@@ -72,6 +80,10 @@
             },
             "development": {
               "browserTarget": "github-languages-dashboard:build:development"
+            },
+            "hmr": {
+              "hmr": true,
+              "browserTarget": "github-languages-dashboard:build:hmr"
             }
           },
           "defaultConfiguration": "development"

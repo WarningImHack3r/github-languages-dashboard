@@ -11,6 +11,40 @@ export class GithubDataService {
 
   constructor(private apollo: Apollo) {}
 
+  getInfoOnSchema(): Observable<ApolloQueryResult<GraphQlQueryResponseData>> {
+    return this.apollo.watchQuery<GraphQlQueryResponseData>({
+      query: gql`
+        query {
+          __schema {
+            types {
+              name
+            }
+          }
+        }
+      `
+    }).valueChanges.pipe(map(result => result.data["__schema"].types));
+  }
+
+  getInfoOnType(typeName: string): Observable<ApolloQueryResult<GraphQlQueryResponseData>> {
+      return this.apollo.watchQuery<GraphQlQueryResponseData>({
+      query: gql`
+        query($typeName: String!) {
+          __type(name: $typeName) {
+            name
+            fields {
+              name
+              type {
+                name
+              }
+            }
+          }
+        }
+      `,
+      variables: {
+        typeName: typeName
+      }
+    }).valueChanges.pipe(map(result => result.data["__type"])); }
+
   getRepo(owner: string, repo: string): Observable<ApolloQueryResult<GraphQlQueryResponseData>> {
     return this.apollo.watchQuery<GraphQlQueryResponseData>({
       query: gql`

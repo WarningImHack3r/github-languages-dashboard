@@ -19,9 +19,8 @@
     "module": "ES2022",
     "useDefineForClassFields": false,
     "lib": [
-      "ES2022",
-      "dom",
-      "esnext.asynciterable"
+      "ESNext",
+      "dom"
     ],
     "allowSyntheticDefaultImports": true
   },
