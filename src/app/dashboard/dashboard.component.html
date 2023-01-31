@@ -1,20 +1,9 @@
 <main class="dashboard">
     <header class="header">
 
-
     </header>
 
     <section class="container">
-
-      <!--
-          First section : Top 10 languages
-          PARAM: Year selection
-          1. list of languages
-          2. graph of languages
-
-          Evolution of the languages during the year
-          1. graph of languages
-      -->
 
       <mat-card class="top-repositories">
         <mat-card-header class="top-repositories-header">
@@ -50,14 +39,6 @@
             <mat-card-header class="top-ten-header">
                 <mat-card-title>Top 10 Repositories</mat-card-title>
                 <mat-card-subtitle>Card subtitle</mat-card-subtitle>
-                <mat-form-field appearance="outline">
-                    <mat-label>Year</mat-label>
-                    <mat-select [(value)]="selectedYear">
-                        <mat-option *ngFor="let year of years" [value]="year">
-                            {{year}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
             </mat-card-header>
             <mat-card-content >
                 <!-- 1. Multiple card inline (Top Issue / Top Fork / Top Pull Request) -->
@@ -74,46 +55,8 @@
                 </div>
 
                 <!-- 3. List of the top repositories -->
-                <div class="top-repositories-list">
-                  <mat-table [dataSource]="dataSourceTopRepos" #SortTopRepos="matSort" matSort>
-                    <ng-container matColumnDef="owner">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header> Owner </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.owner?.login}} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="name">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> <span class="name">{{element.name}}</span> </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="stargazers">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header> <mat-icon>star</mat-icon> </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.stargazers?.totalCount}}  </mat-cell>
-                    </ng-container>
-
-                    <mat-header-row *matHeaderRowDef="displayedColumnsTopRepos;sticky:true"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumnsTopRepos;"></mat-row>
-                  </mat-table>
-                  <mat-paginator #PaginatorTopRepos [length]="100" [pageSize]="10" showFirstLastButtons></mat-paginator>
-                </div>
 
                 <!-- 4. Liscences of the top repositories -->
-                <div class="top-repositories-licenses">
-                    <mat-table [dataSource]="dataSource" matSort>
-                        <ng-container matColumnDef="name">
-                            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-                            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="value">
-                            <mat-header-cell *matHeaderCellDef> Value </mat-header-cell>
-                            <mat-cell *matCellDef="let element"> {{element.value}} </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="percent">
-                            <mat-header-cell *matHeaderCellDef> Percent </mat-header-cell>
-                            <mat-cell *matCellDef="let element"> {{element.percent}} </mat-cell>
-                        </ng-container>
-                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                    </mat-table>
-                </div>
 
             </mat-card-content>
         </mat-card>
@@ -122,14 +65,6 @@
             <mat-card-header class="top-ten-header">
                 <mat-card-title>Top 10 IDE</mat-card-title>
                 <mat-card-subtitle>Card subtitle</mat-card-subtitle>
-                <mat-form-field appearance="outline">
-                    <mat-label>Year</mat-label>
-                    <mat-select [(value)]="selectedYear">
-                        <mat-option *ngFor="let year of years" [value]="year">
-                            {{year}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
             </mat-card-header>
             <mat-card-content  >
               <div class="top-languages-content">
@@ -150,9 +85,7 @@
                      <mat-paginator #PaginatorTopLanguages [length]="18"  [pageSize]="10" showFirstLastButtons></mat-paginator>
                  </div>
               </div>
-
             </mat-card-content>
         </mat-card>
-
     </section>
 </main>
