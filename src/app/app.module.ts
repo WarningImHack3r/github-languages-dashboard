@@ -16,7 +16,6 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     GraphQLModule,
     HttpClientModule,
-    
   ],
   providers: [],
   bootstrap: [AppComponent]

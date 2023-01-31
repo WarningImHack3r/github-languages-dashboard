@@ -17,10 +17,15 @@ export class DashboardComponent implements OnInit {
   isLoading = true;
   displayedColumns: string[] = ['name', 'value', 'percent'];
 
-  displayedColumnsTopTenLanguages: string[] = ['owner', 'name', 'stargazers'];
+  displayedColumnsTopTenRepos: string[] = ['owner', 'name', 'stargazers'];
+  dataSourceTopTenRepos = new MatTableDataSource<any>([{},{},{},{},{},{},{},{},{},{}]);
+  @ViewChild('PaginatorTopTenRepos') paginatorTopTenRepos!: MatPaginator ;
+  @ViewChild('SortTopTenRepos') sortTopTenRepos!: MatSort;
+
+  displayedColumnsTopTenLanguages: string[] = ['name', 'numberOfUsed', ];
   dataSourceTopTenLanguages = new MatTableDataSource<any>([{},{},{},{},{},{},{},{},{},{}]);
-  @ViewChild(MatPaginator) paginator!: MatPaginator ;
-  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild('PaginatorTopTenLanguages') paginatorTopTenLanguages!: MatPaginator ;
+  @ViewChild('SortTopTenLanguages') sortTopTenLanguages!: MatSort;
 
   dataSource: any = [
     {name: 'X-1', value: 0, percent: 0},
@@ -336,17 +341,35 @@ export class DashboardComponent implements OnInit {
     private _changeDetector: ChangeDetectorRef,
     ) {
     this.isLoading = true;
+
     this.githubDataService.getTopRepos(100).subscribe(result => {
-      console.log(result);
-      this.isLoading = result.loading;
-      this.dataSourceTopTenLanguages = new MatTableDataSource(result);
-      this.dataSourceTopTenLanguages.paginator = this.paginator;
-      this.dataSourceTopTenLanguages.sort = this.sort;
+      this.dataSourceTopTenRepos = new MatTableDataSource(result);
+      this.dataSourceTopTenRepos.paginator = this.paginatorTopTenRepos;
+      this.dataSourceTopTenRepos.sort = this.sortTopTenRepos;
     });
 
     this.githubDataService.getTopLanguages(100).subscribe(data => {
+      // this.dataSourceTopTenLanguages = new MatTableDataSource(data);
+      // this.dataSourceTopTenLanguages.paginator = this.paginatorTopTenLanguages;
+      // this.dataSourceTopTenLanguages.sort = this.sortTopTenLanguages;
+      console.log(data);
+    });
+
+    // this.githubDataService.getAppleLanguagesCount(100).subscribe(data => {
+    //   this.isLoading = data.loading;
+    //   console.log(data);
+    // });
+
+    // this.githubDataService.getAndroidLanguagesCount(100).subscribe(data => {
+    //   this.isLoading = data.loading;
+    //   console.log(data);
+    // });
+
+    this.githubDataService.getMostUsedIDEs(100).subscribe(data => {
       this.isLoading = data.loading;
       console.log(data);
+      console.log(data[0]);
+      console.log(data.Other);
     });
 
     // array of years from 2008 (creation of GitHub) to today
@@ -357,7 +380,5 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {}
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 }

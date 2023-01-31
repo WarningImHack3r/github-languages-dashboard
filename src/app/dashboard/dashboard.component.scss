@@ -15,7 +15,7 @@
     align-items: center;
     gap: 32px;
     margin: 20px;
-} 
+}
 
 .container {
     display: flex;
@@ -32,6 +32,11 @@
 
     .chart {
         width: 100%;
+    }
+
+    .name {
+      white-space: nowrap;
+
     }
 }
 
@@ -54,7 +59,7 @@
         justify-content: space-between;
         gap: 32px;
     }
-    
+
 }
 
 .thrid-card {

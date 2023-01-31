@@ -20,38 +20,34 @@
             <mat-card-header class="top-languages-header">
                 <mat-card-title>Top 10 Languages</mat-card-title>
                 <mat-card-subtitle>Card subtitle</mat-card-subtitle>
-                <mat-form-field appearance="outline">
+                <!-- <mat-form-field appearance="outline">
                     <mat-label>Year</mat-label>
                     <mat-select [(value)]="selectedYear">
                         <mat-option *ngFor="let year of years" [value]="year">
                             {{year}}
                         </mat-option>
                     </mat-select>
-                </mat-form-field>
+                </mat-form-field> -->
             </mat-card-header>
             <mat-card-content>
                 <div class="top-languages-content">
                     <div>
                         <!-- MatTablee -->
-                         <mat-table [dataSource]="dataSourceTopTenLanguages" matSort matSortDirection="stargazers">
-                             <ng-container matColumnDef="owner">
-                                 <mat-header-cell *matHeaderCellDef mat-sort-header> Owner </mat-header-cell>
-                                 <mat-cell *matCellDef="let element"> {{element.owner?.login}} </mat-cell>
-                             </ng-container>
+                         <mat-table [dataSource]="dataSourceTopTenLanguages" #SortTopTenLanguages matSortDirection="stargazers">
                              <ng-container matColumnDef="name">
                                  <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-                                 <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                                 <mat-cell *matCellDef="let element"> {{element}} </mat-cell>
                              </ng-container>
-                             <ng-container matColumnDef="stargazers">
-                                 <mat-header-cell *matHeaderCellDef mat-sort-header> <mat-icon>star</mat-icon> </mat-header-cell>
-                                 <mat-cell *matCellDef="let element"> {{element.stargazers?.totalCount}}  </mat-cell>
+                             <ng-container matColumnDef="numberOfUsed">
+                                 <mat-header-cell *matHeaderCellDef mat-sort-header> NumberOfUsed </mat-header-cell>
+                                 <mat-cell *matCellDef="let element"> <span class="name">{{element}}</span> </mat-cell>
                              </ng-container>
 
                              <mat-header-row *matHeaderRowDef="displayedColumnsTopTenLanguages;sticky:true"></mat-header-row>
                              <mat-row *matRowDef="let row; columns: displayedColumnsTopTenLanguages;"></mat-row>
                          </mat-table>
 
-                         <mat-paginator [length]="100" [pageSize]="10" showFirstLastButtons></mat-paginator>
+                         <mat-paginator #PaginatorTopTenLanguages [length]="100" [pageSize]="10" showFirstLastButtons></mat-paginator>
 
                      </div>
 
@@ -65,12 +61,12 @@
                 </div>
 
                 <div class="languages-evolution">
-                    <div echarts
+                    <!-- <div echarts
                         [options]="Stacked_Area_Chart"
                         [loading]="isLoading"
                         theme="macarons"
                         class="chart">
-                    </div>
+                    </div> -->
                 </div>
             </mat-card-content>
         </mat-card>
@@ -86,7 +82,7 @@
 
         <mat-card>
             <mat-card-header class="top-ten-header">
-                <mat-card-title>Top 10 Languages</mat-card-title>
+                <mat-card-title>Top 10 Repositories</mat-card-title>
                 <mat-card-subtitle>Card subtitle</mat-card-subtitle>
                 <mat-form-field appearance="outline">
                     <mat-label>Year</mat-label>
@@ -107,31 +103,34 @@
                 </div>
 
                 <!-- 2. Graph of the evolution of the top repositories -->
-                <div echarts
+                <!-- <div echarts
                     [options]="Stacked_Area_Chart"
                     [loading]="isLoading"
                     theme="macarons"
                     class="chart">
-                </div>
+                </div> -->
 
                 <!-- 3. List of the top repositories -->
                 <div class="top-repositories-list">
-                    <mat-table [dataSource]="dataSource" >
-                        <ng-container matColumnDef="name">
-                            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-                            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="value">
-                            <mat-header-cell *matHeaderCellDef> Value </mat-header-cell>
-                            <mat-cell *matCellDef="let element"> {{element.value}} </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="percent">
-                            <mat-header-cell *matHeaderCellDef> Percent </mat-header-cell>
-                            <mat-cell *matCellDef="let element"> {{element.percent}} </mat-cell>
-                        </ng-container>
-                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                    </mat-table>
+                  <mat-table [dataSource]="dataSourceTopTenRepos" #SortTopTenLanguages matSortDirection="stargazers">
+                    <ng-container matColumnDef="owner">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Owner </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.owner?.login}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> <span class="name">{{element.name}}</span> </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="stargazers">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> <mat-icon>star</mat-icon> </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.stargazers?.totalCount}}  </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumnsTopTenRepos;sticky:true"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumnsTopTenRepos;"></mat-row>
+                </mat-table>
+
+                <mat-paginator #PaginatorTopTenRepos [length]="100" [pageSize]="10" showFirstLastButtons></mat-paginator>
                 </div>
 
                 <!-- 4. Liscences of the top repositories -->
@@ -163,7 +162,7 @@
             1. List of the top contributors
         -->
 
-        <mat-card>
+        <!-- <mat-card>
             <mat-card-header class="top-ten-header">
                 <mat-card-title>Top 10 Contributors</mat-card-title>
                 <mat-card-subtitle>Card subtitle</mat-card-subtitle>
@@ -196,7 +195,7 @@
                     </mat-table>
                 </div>
             </mat-card-content>
-        </mat-card>
+        </mat-card> -->
 
         <!--
             Fourth section : Top Organizations
@@ -204,7 +203,7 @@
             1. List of the top organizations
         -->
 
-        <mat-card>
+        <!-- <mat-card>
             <mat-card-header class="top-ten-header">
                 <mat-card-title>Top 10 Organizations</mat-card-title>
                 <mat-card-subtitle>Card subtitle</mat-card-subtitle>
@@ -237,7 +236,7 @@
                     </mat-table>
                 </div>
             </mat-card-content>
-        </mat-card>
+        </mat-card> -->
 
 
         <!--
