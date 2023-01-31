@@ -101,8 +101,6 @@ export class GithubDataService {
       map(result => result.data["search"].nodes
         .map((repo: any) => repo.languages.nodes[0])
         .filter((lang: any) => lang !== undefined)
-        // return list language with name and count of occurence
-        // used topLanguagesDate
         .reduce((acc: topLanguagesDate[], lang: any) => {
           const index = acc.findIndex((item: topLanguagesDate) => item.name === lang.name);
           if (index === -1) {

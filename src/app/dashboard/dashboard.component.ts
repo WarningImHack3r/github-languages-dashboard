@@ -349,10 +349,9 @@ export class DashboardComponent implements OnInit {
     });
 
     this.githubDataService.getTopLanguages(100).subscribe(data => {
-      // this.dataSourceTopTenLanguages = new MatTableDataSource(data);
-      // this.dataSourceTopTenLanguages.paginator = this.paginatorTopTenLanguages;
-      // this.dataSourceTopTenLanguages.sort = this.sortTopTenLanguages;
-      console.log(data);
+      this.dataSourceTopTenLanguages = new MatTableDataSource(data);
+      this.dataSourceTopTenLanguages.paginator = this.paginatorTopTenLanguages;
+      this.dataSourceTopTenLanguages.sort = this.sortTopTenLanguages;
     });
 
     // this.githubDataService.getAppleLanguagesCount(100).subscribe(data => {

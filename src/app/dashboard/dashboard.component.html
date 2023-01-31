@@ -36,19 +36,18 @@
                          <mat-table [dataSource]="dataSourceTopTenLanguages" #SortTopTenLanguages matSortDirection="stargazers">
                              <ng-container matColumnDef="name">
                                  <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-                                 <mat-cell *matCellDef="let element"> {{element}} </mat-cell>
+                                 <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
                              </ng-container>
                              <ng-container matColumnDef="numberOfUsed">
                                  <mat-header-cell *matHeaderCellDef mat-sort-header> NumberOfUsed </mat-header-cell>
-                                 <mat-cell *matCellDef="let element"> <span class="name">{{element}}</span> </mat-cell>
+                                 <mat-cell *matCellDef="let element"> <span class="name">{{element.count}}</span> </mat-cell>
                              </ng-container>
 
                              <mat-header-row *matHeaderRowDef="displayedColumnsTopTenLanguages;sticky:true"></mat-header-row>
                              <mat-row *matRowDef="let row; columns: displayedColumnsTopTenLanguages;"></mat-row>
                          </mat-table>
 
-                         <mat-paginator #PaginatorTopTenLanguages [length]="100" [pageSize]="10" showFirstLastButtons></mat-paginator>
-
+                         <mat-paginator #PaginatorTopTenLanguages  [pageSize]="10" showFirstLastButtons></mat-paginator>
                      </div>
 
                      <div echarts
