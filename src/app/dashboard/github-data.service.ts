@@ -9,40 +9,6 @@ export class GithubDataService {
 
   constructor(private apollo: Apollo) {}
 
-  getInfoOnSchema(): Observable<any> {
-    return this.apollo.watchQuery<any>({
-      query: gql`
-        query {
-          __schema {
-            types {
-              name
-            }
-          }
-        }
-      `
-    }).valueChanges.pipe(map(result => result.data["__schema"].types));
-  }
-
-  getInfoOnType(typeName: string): Observable<any> {
-      return this.apollo.watchQuery<any>({
-      query: gql`
-        query($typeName: String!) {
-          __type(name: $typeName) {
-            name
-            fields {
-              name
-              type {
-                name
-              }
-            }
-          }
-        }
-      `,
-      variables: {
-        typeName: typeName
-      }
-    }).valueChanges.pipe(map(result => result.data["__type"])); }
-
   getTopRepos(limit: number): Observable<any> {
     return this.apollo.watchQuery<any>({
       query: gql`
@@ -101,8 +67,8 @@ export class GithubDataService {
       map(result => result.data["search"].nodes
         .map((repo: any) => repo.languages.nodes[0])
         .filter((lang: any) => lang !== undefined)
-        .reduce((acc: topLanguagesDate[], lang: any) => {
-          const index = acc.findIndex((item: topLanguagesDate) => item.name === lang.name);
+        .reduce((acc: TopLanguagesDate[], lang: any) => {
+          const index = acc.findIndex((item: TopLanguagesDate) => item.name === lang.name);
           if (index === -1) {
             acc.push({ name: lang.name, count: 1 });
           } else {
@@ -194,8 +160,7 @@ export class GithubDataService {
   }
 }
 
-
-export interface topLanguagesDate {
+interface TopLanguagesDate {
   name: string;
   count: number;
 }
