@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { GithubDataService } from './github-data.service';
+import { GithubDataService, TopLanguagesDate } from './github-data.service';
 import * as echarts from 'echarts';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
@@ -292,48 +292,41 @@ export class DashboardComponent implements OnInit {
   };
 
   Doughnut_Chart: EChartsOption = {
+    title: {
+      text: 'Referer of a Website',
+      subtext: 'Fake Data',
+      left: 'center'
+    },
     tooltip: {
       trigger: 'item'
     },
     legend: {
-      top: '5%',
-      left: 'center'
+      orient: 'vertical',
+      left: 'left'
     },
     series: [
       {
         name: 'Access From',
         type: 'pie',
-        radius: ['40%', '70%'],
-        avoidLabelOverlap: false,
-        itemStyle: {
-          borderRadius: 10,
-          borderColor: '#fff',
-          borderWidth: 2
-        },
-        label: {
-          show: false,
-          position: 'center'
-        },
-        emphasis: {
-          label: {
-            show: true,
-            fontSize: 40,
-            fontWeight: 'bold'
-          }
-        },
-        labelLine: {
-          show: false
-        },
+        radius: '50%',
         data: [
           { value: 1048, name: 'Search Engine' },
           { value: 735, name: 'Direct' },
           { value: 580, name: 'Email' },
           { value: 484, name: 'Union Ads' },
           { value: 300, name: 'Video Ads' }
-        ]
+        ],
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        }
       }
     ]
   };
+
 
 
   constructor(
@@ -348,10 +341,15 @@ export class DashboardComponent implements OnInit {
       this.dataSourceTopRepos.sort = this.sortTopRepos;
     });
 
-    this.githubDataService.getTopLanguages(100).subscribe(data => {
+    this.githubDataService.getTopLanguages(100).subscribe((data: TopLanguagesDate[]) => {
       this.dataSourceTopLanguages = new MatTableDataSource(data);
       this.dataSourceTopLanguages.paginator = this.paginatorTopLanguages;
       this.dataSourceTopLanguages.sort = this.sortTopLanguages;
+
+      // Doughnut_Chart
+      const series = this.Doughnut_Chart.series as echarts.SeriesOption[];
+      series[0].data = data;
+      this.Doughnut_Chart.series = series;
     });
 
     // this.githubDataService.getAppleLanguagesCount(100).subscribe(data => {

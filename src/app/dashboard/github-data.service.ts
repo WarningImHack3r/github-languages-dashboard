@@ -160,7 +160,7 @@ export class GithubDataService {
   }
 }
 
-interface TopLanguagesDate {
+export interface TopLanguagesDate {
   name: string;
   count: number;
 }
