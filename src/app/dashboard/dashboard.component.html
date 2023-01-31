@@ -18,7 +18,7 @@
 
         <mat-card>
             <mat-card-header class="top-languages-header">
-                <mat-card-title>Top 10 Languages</mat-card-title>
+                <mat-card-title>Top des Languages</mat-card-title>
                 <mat-card-subtitle>Card subtitle</mat-card-subtitle>
                 <!-- <mat-form-field appearance="outline">
                     <mat-label>Year</mat-label>
@@ -33,21 +33,19 @@
                 <div class="top-languages-content">
                     <div>
                         <!-- MatTablee -->
-                         <mat-table [dataSource]="dataSourceTopTenLanguages" #SortTopTenLanguages matSortDirection="stargazers">
+                         <mat-table  #SortTopLanguages="matSort" [dataSource]="dataSourceTopLanguages" matSort >
                              <ng-container matColumnDef="name">
                                  <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
                                  <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
                              </ng-container>
-                             <ng-container matColumnDef="numberOfUsed">
+                             <ng-container matColumnDef="count">
                                  <mat-header-cell *matHeaderCellDef mat-sort-header> NumberOfUsed </mat-header-cell>
                                  <mat-cell *matCellDef="let element"> <span class="name">{{element.count}}</span> </mat-cell>
                              </ng-container>
-
-                             <mat-header-row *matHeaderRowDef="displayedColumnsTopTenLanguages;sticky:true"></mat-header-row>
-                             <mat-row *matRowDef="let row; columns: displayedColumnsTopTenLanguages;"></mat-row>
+                             <mat-header-row *matHeaderRowDef="displayedColumnsTopLanguages;sticky:true"></mat-header-row>
+                             <mat-row *matRowDef="let row; columns: displayedColumnsTopLanguages;"></mat-row>
                          </mat-table>
-
-                         <mat-paginator #PaginatorTopTenLanguages  [pageSize]="10" showFirstLastButtons></mat-paginator>
+                         <mat-paginator #PaginatorTopLanguages [length]="18"  [pageSize]="10" showFirstLastButtons></mat-paginator>
                      </div>
 
                      <div echarts
@@ -111,7 +109,7 @@
 
                 <!-- 3. List of the top repositories -->
                 <div class="top-repositories-list">
-                  <mat-table [dataSource]="dataSourceTopTenRepos" #SortTopTenLanguages matSortDirection="stargazers">
+                  <mat-table [dataSource]="dataSourceTopRepos" #SortTopRepos="matSort" matSort>
                     <ng-container matColumnDef="owner">
                         <mat-header-cell *matHeaderCellDef mat-sort-header> Owner </mat-header-cell>
                         <mat-cell *matCellDef="let element"> {{element.owner?.login}} </mat-cell>
@@ -125,16 +123,15 @@
                         <mat-cell *matCellDef="let element"> {{element.stargazers?.totalCount}}  </mat-cell>
                     </ng-container>
 
-                    <mat-header-row *matHeaderRowDef="displayedColumnsTopTenRepos;sticky:true"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumnsTopTenRepos;"></mat-row>
+                    <mat-header-row *matHeaderRowDef="displayedColumnsTopRepos;sticky:true"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumnsTopRepos;"></mat-row>
                 </mat-table>
-
-                <mat-paginator #PaginatorTopTenRepos [length]="100" [pageSize]="10" showFirstLastButtons></mat-paginator>
+                <mat-paginator #PaginatorTopRepos [length]="100" [pageSize]="10" showFirstLastButtons></mat-paginator>
                 </div>
 
                 <!-- 4. Liscences of the top repositories -->
                 <div class="top-repositories-licenses">
-                    <mat-table [dataSource]="dataSource" >
+                    <mat-table [dataSource]="dataSource" matSort>
                         <ng-container matColumnDef="name">
                             <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
                             <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
@@ -260,7 +257,7 @@
             </mat-card-header>
             <mat-card-content  >
                 <div class="top-ide-list">
-                    <mat-table [dataSource]="dataSource" >
+                    <mat-table [dataSource]="dataSource" matSort>
                         <ng-container matColumnDef="name">
                             <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
                             <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>

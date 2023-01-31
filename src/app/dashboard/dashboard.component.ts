@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { GithubDataService } from './github-data.service';
+import { GithubDataService, topLanguagesDate } from './github-data.service';
 import * as echarts from 'echarts';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
@@ -17,15 +17,15 @@ export class DashboardComponent implements OnInit {
   isLoading = true;
   displayedColumns: string[] = ['name', 'value', 'percent'];
 
-  displayedColumnsTopTenRepos: string[] = ['owner', 'name', 'stargazers'];
-  dataSourceTopTenRepos = new MatTableDataSource<any>([{},{},{},{},{},{},{},{},{},{}]);
-  @ViewChild('PaginatorTopTenRepos') paginatorTopTenRepos!: MatPaginator ;
-  @ViewChild('SortTopTenRepos') sortTopTenRepos!: MatSort;
+  displayedColumnsTopRepos: string[] = ['owner', 'name', 'stargazers'];
+  dataSourceTopRepos = new MatTableDataSource<any>([{},{},{},{},{},{},{},{},{},{}]);
+  @ViewChild('PaginatorTopRepos') paginatorTopRepos!: MatPaginator ;
+  @ViewChild('SortTopRepos') sortTopRepos!: MatSort;
 
-  displayedColumnsTopTenLanguages: string[] = ['name', 'numberOfUsed', ];
-  dataSourceTopTenLanguages = new MatTableDataSource<any>([{},{},{},{},{},{},{},{},{},{}]);
-  @ViewChild('PaginatorTopTenLanguages') paginatorTopTenLanguages!: MatPaginator ;
-  @ViewChild('SortTopTenLanguages') sortTopTenLanguages!: MatSort;
+  displayedColumnsTopLanguages: string[] = ['name', 'count', ];
+  dataSourceTopLanguages = new MatTableDataSource<any>([{},{},{},{},{},{},{},{},{},{}]);
+  @ViewChild('PaginatorTopLanguages') paginatorTopLanguages!: MatPaginator ;
+  @ViewChild('SortTopLanguages') sortTopLanguages!: MatSort;
 
   dataSource: any = [
     {name: 'X-1', value: 0, percent: 0},
@@ -343,15 +343,15 @@ export class DashboardComponent implements OnInit {
     this.isLoading = true;
 
     this.githubDataService.getTopRepos(100).subscribe(result => {
-      this.dataSourceTopTenRepos = new MatTableDataSource(result);
-      this.dataSourceTopTenRepos.paginator = this.paginatorTopTenRepos;
-      this.dataSourceTopTenRepos.sort = this.sortTopTenRepos;
+      this.dataSourceTopRepos = new MatTableDataSource(result);
+      this.dataSourceTopRepos.paginator = this.paginatorTopRepos;
+      this.dataSourceTopRepos.sort = this.sortTopRepos;
     });
 
     this.githubDataService.getTopLanguages(100).subscribe(data => {
-      this.dataSourceTopTenLanguages = new MatTableDataSource(data);
-      this.dataSourceTopTenLanguages.paginator = this.paginatorTopTenLanguages;
-      this.dataSourceTopTenLanguages.sort = this.sortTopTenLanguages;
+      this.dataSourceTopLanguages = new MatTableDataSource(data);
+      this.dataSourceTopLanguages.paginator = this.paginatorTopLanguages;
+      this.dataSourceTopLanguages.sort = this.sortTopLanguages;
     });
 
     // this.githubDataService.getAppleLanguagesCount(100).subscribe(data => {
