@@ -101,17 +101,18 @@ export class GithubDataService {
       map(result => result.data["search"].nodes
         .map((repo: any) => repo.languages.nodes[0])
         .filter((lang: any) => lang !== undefined)
-        .map((lang: any) => lang.name)
-        .reduce((acc: any, lang: any) => {
-          if (acc[lang]) {
-            acc[lang] += 1;
+        // return list language with name and count of occurence
+        // used topLanguagesDate
+        .reduce((acc: topLanguagesDate[], lang: any) => {
+          const index = acc.findIndex((item: topLanguagesDate) => item.name === lang.name);
+          if (index === -1) {
+            acc.push({ name: lang.name, count: 1 });
           } else {
-            acc[lang] = 1;
+            acc[index].count += 1;
           }
           return acc;
-        }, {})
-      )
-    );
+        }, [])
+    ));
   }
 
   getMostUsedIDEs(limit: number): Observable<any> {
@@ -193,4 +194,10 @@ export class GithubDataService {
       map((languages: any) => (languages["Java"] || 0) + (languages["Kotlin"] || 0))
     );
   }
+}
+
+
+export interface topLanguagesDate {
+  name: string;
+  count: number;
 }
