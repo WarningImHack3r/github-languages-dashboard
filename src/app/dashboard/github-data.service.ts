@@ -9,6 +9,44 @@ export class GithubDataService {
 
   constructor(private apollo: Apollo) {}
 
+  getInfoOfRepo(owner: string, name: string): Observable<any> {
+    return this.apollo.watchQuery<any>({
+      query: gql`
+        query($owner: String!, $name: String!) {
+          repository(owner: $owner, name: $name) {
+            owner {
+              login
+            }
+            name
+            stargazers {
+              totalCount
+            }
+            languages(first: 10) {
+              nodes {
+                name
+                color
+              }
+              totalSize
+            }
+            object(expression: "master:") {
+              ... on Tree {
+                entries {
+                  name
+                }
+              }
+            }
+          }
+        }
+      `,
+      variables: {
+        owner: owner,
+        name: name
+      }
+    }).valueChanges.pipe(
+      map(result => result.data["repository"])
+    );
+  }
+
   getTopRepos(limit: number): Observable<any> {
     return this.apollo.watchQuery<any>({
       query: gql`
