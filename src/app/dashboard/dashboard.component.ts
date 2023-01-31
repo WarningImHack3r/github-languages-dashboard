@@ -5,6 +5,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { Doughnut_Chartget } from './chart-option';
+import { MatDialog } from '@angular/material/dialog';
+import { RepoInfoComponent } from './components/repo-info/repo-info.component';
 
 type EChartsOption = echarts.EChartsOption;
 
@@ -16,6 +18,7 @@ type EChartsOption = echarts.EChartsOption;
 export class DashboardComponent implements OnInit {
   repositories: any;
   isLoading = true;
+  checked = true;
   displayedColumns: string[] = ['name', 'value', 'percent'];
 
   displayedColumnsTopRepos: string[] = ['owner', 'name', 'stargazers'];
@@ -32,10 +35,14 @@ export class DashboardComponent implements OnInit {
   Doughnut_Chartget_AndroidvsApple: EChartsOption = Doughnut_Chartget;
 
   years: number[];
+  DialogReposComponentRef: any;
 
   constructor(
     private githubDataService: GithubDataService,
     private _changeDetector: ChangeDetectorRef,
+    private _matDialog: MatDialog,
+
+
     ) {
     this.isLoading = true;
 
@@ -78,8 +85,24 @@ export class DashboardComponent implements OnInit {
     this.years = Array.from({ length: new Date().getFullYear() - initialYear + 1 }, (val, index) => index + initialYear);
   }
 
+
+
   ngOnInit() {}
 
   ngAfterViewInit() {
+  }
+
+  onClickRepos(row: any): void {
+    console.log('onClickRepos', row);
+    // Open Dialog with Repositories informations
+    this.DialogReposComponentRef = this._matDialog.open(RepoInfoComponent, {
+      width: '30%',
+      panelClass: 'dialog-repos',
+      data: { owner: row.owner.login, name: row.name }
+    });
+  }
+
+  toggleDarkTheme(checked: boolean) {
+    document.body.classList.toggle('dark-theme', checked);
   }
 }

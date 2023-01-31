@@ -14,10 +14,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { RepoInfoComponent } from './components/repo-info/repo-info.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 @NgModule({
   declarations: [
     DashboardComponent,
-    CardStatsComponent
+    CardStatsComponent,
+    RepoInfoComponent
   ],
   imports: [
     CommonModule,
@@ -32,6 +38,9 @@ import { MatSortModule } from '@angular/material/sort';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    MatToolbarModule,
+    MatDialogModule,
+    MatProgressSpinnerModule,
 
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'),

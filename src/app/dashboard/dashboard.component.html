@@ -1,6 +1,15 @@
 <main class="dashboard">
     <header class="header">
+      <mat-toolbar color="primary">
+        <span>Github Dashboard</span>
 
+        <span class="spacer"></span>
+
+        <button mat-icon-button (click)="toggleDarkTheme(checked = !checked)">
+          <mat-icon>{{checked ? 'dark_mode' :  'light_mode'}}</mat-icon>
+        </button>
+
+      </mat-toolbar>
     </header>
 
     <section class="container">
@@ -27,7 +36,7 @@
               </ng-container>
 
               <mat-header-row *matHeaderRowDef="displayedColumnsTopRepos;sticky:true"></mat-header-row>
-              <mat-row *matRowDef="let row; columns: displayedColumnsTopRepos;"></mat-row>
+              <mat-row *matRowDef="let row; columns: displayedColumnsTopRepos;" matRipple (click)="onClickRepos(row)"></mat-row>
             </mat-table>
             <mat-paginator #PaginatorTopRepos [length]="100" [pageSize]="10" showFirstLastButtons></mat-paginator>
           </div>

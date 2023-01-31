@@ -9,12 +9,9 @@
 }
 
 .header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  gap: 32px;
-  margin: 20px;
+  .spacer {
+    flex: 1 1 auto;
+  }
 }
 
 .container {
@@ -98,7 +95,11 @@
       border-right: 2px solid #e0e0e0;
       border-top: 2px solid #e0e0e0;
       border-top-right-radius: 4px;
+      cursor: pointer;
 
+      .mat-mdc-row:hover {
+        background-color: #e0e0e0 !important;
+      }
     }
 
     .chart {
