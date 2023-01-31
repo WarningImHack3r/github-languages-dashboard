@@ -4,6 +4,7 @@ import * as echarts from 'echarts';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { Doughnut_Chartget } from './chart-option';
 
 type EChartsOption = echarts.EChartsOption;
 
@@ -291,37 +292,8 @@ export class DashboardComponent implements OnInit {
     ]
   };
 
-  Doughnut_Chart: EChartsOption = {
-    title: {
-      text: 'Referer of a Website',
-      subtext: 'Fake Data',
-      left: 'center'
-    },
-    tooltip: {
-      trigger: 'item'
-    },
-    legend: {
-      orient: 'vertical',
-      left: 'left'
-    },
-    series: [
-      {
-        name: 'Access From',
-        type: 'pie',
-        radius: '50%',
-        data: [
-
-        ],
-        emphasis: {
-          itemStyle: {
-            shadowBlur: 10,
-            shadowOffsetX: 0,
-            shadowColor: 'rgba(0, 0, 0, 0.5)'
-          }
-        }
-      }
-    ]
-  };
+  Doughnut_Chartget_TopLanguages: EChartsOption = Doughnut_Chartget;
+  Doughnut_Chartget_AndroidvsApple: EChartsOption = Doughnut_Chartget;
 
 
 
@@ -343,28 +315,29 @@ export class DashboardComponent implements OnInit {
       this.dataSourceTopLanguages.sort = this.sortTopLanguages;
 
       // Doughnut_Chart
-      const series = this.Doughnut_Chart.series as echarts.SeriesOption[];
+      const series = this.Doughnut_Chartget_TopLanguages.series as echarts.SeriesOption[];
       series[0].data = data.map(d => ({ value: d.count, name: d.name }));
-      this.Doughnut_Chart.series = series;
-      this.Doughnut_Chart = { ...this.Doughnut_Chart };
+      this.Doughnut_Chartget_TopLanguages.series = series;
+      this.Doughnut_Chartget_TopLanguages = { ...this.Doughnut_Chartget_TopLanguages };
       this.isLoading = false;
       this._changeDetector.detectChanges();
     });
 
-    // this.githubDataService.getAppleLanguagesCount(100).subscribe(data => {
-    //   this.isLoading = data.loading;
-    //   console.log(data);
-    // });
+    // request for Android vs Apple contact request
 
-    // this.githubDataService.getAndroidLanguagesCount(100).subscribe(data => {
-    //   this.isLoading = data.loading;
-    //   console.log(data);
-    // });
 
-    this.githubDataService.getMostUsedIDEs(100).subscribe(data => {
+    this.githubDataService.getAppleVsAndroidLanguagesCount(100).subscribe(data => {
+      // Doughnut_Chart
+      const series = this.Doughnut_Chartget_AndroidvsApple.series as echarts.SeriesOption[];
+      series[0].data = [{value: data.androidCount, name: 'Android'}, { value: data.appleCount, name: 'Apple'}]
+      this.Doughnut_Chartget_AndroidvsApple.series = series;
+      this.Doughnut_Chartget_AndroidvsApple = { ...this.Doughnut_Chartget_AndroidvsApple };
+      this.isLoading = false;
+      this._changeDetector.detectChanges();
+    });
+
+    this.githubDataService.getMostUsedIDEs(100).subscribe( data => {
       console.log(data);
-      console.log(data[0]);
-      console.log(data.Other);
     });
 
     // array of years from 2008 (creation of GitHub) to today

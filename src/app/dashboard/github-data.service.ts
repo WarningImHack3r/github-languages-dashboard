@@ -147,15 +147,15 @@ export class GithubDataService {
     );
   }
 
-  getAppleLanguagesCount(limit: number): Observable<any> {
+  getAppleVsAndroidLanguagesCount(limit: number): Observable<any> {
     return this.getTopLanguages(limit).pipe(
-      map((languages: any) => (languages["Swift"] || 0) + (languages["Objective-C"] || 0) + (languages["Objective-C++"] || 0))
-    );
-  }
-
-  getAndroidLanguagesCount(limit: number): Observable<any> {
-    return this.getTopLanguages(limit).pipe(
-      map((languages: any) => (languages["Java"] || 0) + (languages["Kotlin"] || 0))
+      map((languages: any) => {
+        const appleLanguages = (languages["Swift"] || 0) + (languages["Objective-C"] || 0) + (languages["Objective-C++"] || 0);
+        const androidLanguages = (languages["Java"] || 0) + (languages["Kotlin"] || 0);
+        return {
+          appleCount: appleLanguages,
+          androidCount: androidLanguages
+        }})
     );
   }
 }
