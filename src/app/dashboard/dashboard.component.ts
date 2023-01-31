@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { GithubDataService, topLanguagesDate } from './github-data.service';
+import { GithubDataService } from './github-data.service';
 import * as echarts from 'echarts';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
