@@ -310,11 +310,7 @@ export class DashboardComponent implements OnInit {
         type: 'pie',
         radius: '50%',
         data: [
-          { value: 1048, name: 'Search Engine' },
-          { value: 735, name: 'Direct' },
-          { value: 580, name: 'Email' },
-          { value: 484, name: 'Union Ads' },
-          { value: 300, name: 'Video Ads' }
+
         ],
         emphasis: {
           itemStyle: {
@@ -348,8 +344,11 @@ export class DashboardComponent implements OnInit {
 
       // Doughnut_Chart
       const series = this.Doughnut_Chart.series as echarts.SeriesOption[];
-      series[0].data = data;
+      series[0].data = data.map(d => ({ value: d.count, name: d.name }));
       this.Doughnut_Chart.series = series;
+      this.Doughnut_Chart = { ...this.Doughnut_Chart };
+      this.isLoading = false;
+      this._changeDetector.detectChanges();
     });
 
     // this.githubDataService.getAppleLanguagesCount(100).subscribe(data => {
@@ -363,7 +362,6 @@ export class DashboardComponent implements OnInit {
     // });
 
     this.githubDataService.getMostUsedIDEs(100).subscribe(data => {
-      this.isLoading = data.loading;
       console.log(data);
       console.log(data[0]);
       console.log(data.Other);

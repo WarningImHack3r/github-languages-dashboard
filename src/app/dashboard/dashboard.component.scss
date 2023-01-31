@@ -31,11 +31,15 @@
   gap: 32px;
 
   .chart {
-    width: 100%;
+    width: 60%;
   }
 
   .name {
     white-space: nowrap;
+  }
+
+  .list-languages {
+    width: 40%;
   }
 }
 
@@ -71,3 +75,38 @@
     width: 100%;
   }
 }
+
+
+.top-repositories .top-repositories-header {
+  padding: 16px;
+}
+
+.top-repositories {
+
+  .mat-mdc-card-content {
+    padding: 0 !important;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 32px;
+
+    .top-repositories-list {
+      width: 60%;
+      border-right: 2px solid #e0e0e0;
+      border-top: 2px solid #e0e0e0;
+      border-top-right-radius: 4px;
+
+    }
+
+    .chart {
+      width: 40%;
+    }
+  }
+
+
+
+}
+
