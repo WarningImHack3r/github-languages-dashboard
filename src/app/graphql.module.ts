@@ -3,7 +3,7 @@ import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
 import { ApolloClientOptions, ApolloLink, InMemoryCache } from '@apollo/client/core';
 import { HttpLink } from 'apollo-angular/http';
 import { setContext } from '@apollo/client/link/context';
-import { environment } from 'src/environments/environment';
+import { environment } from "../environments/environment";
 
 const uri = "https://api.github.com/graphql";
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
