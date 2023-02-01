@@ -5,12 +5,12 @@ on:
     branches:
       - main
 
+env:
+  IMAGE_NAME: github-languages-dashboard:1.0.0-$GITHUB_RUN_NUMBER
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME: github-languages-dashboard:1.0.0-${{ env.GITHUB_RUN_NUMBER }}
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
