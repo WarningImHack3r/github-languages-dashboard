@@ -188,12 +188,21 @@ export class GithubDataService {
   getAppleVsAndroidLanguagesCount(limit: number): Observable<any> {
     return this.getTopLanguages(limit).pipe(
       map((languages: any) => {
-        const appleLanguages = (languages["Swift"] || 0) + (languages["Objective-C"] || 0) + (languages["Objective-C++"] || 0);
-        const androidLanguages = (languages["Java"] || 0) + (languages["Kotlin"] || 0);
         return {
-          appleCount: appleLanguages,
-          androidCount: androidLanguages
-        }})
+          androidCount: languages.reduce((acc: number, lang: any) => {
+            if (lang.name === "Java" || lang.name === "Kotlin") {
+              return lang.count;
+            }
+            return acc;
+          }),
+          appleCount: languages.reduce((acc: number, lang: any) => {
+            if (lang.name === "Swift" || lang.name === "Objective-C" || lang.name === "Objective-C++") {
+              return lang.count;
+            }
+            return acc;
+          })
+        };
+      })
     );
   }
 }
