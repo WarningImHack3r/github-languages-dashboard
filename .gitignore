@@ -49,7 +49,6 @@ Thumbs.db
 
 # Environment variables
 .env
-src/environments/*.ts
 
 # GraphQL
 *.graphqlconfig
