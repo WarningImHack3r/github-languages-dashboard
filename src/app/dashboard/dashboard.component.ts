@@ -18,7 +18,7 @@ type EChartsOption = echarts.EChartsOption;
 export class DashboardComponent implements OnInit {
   repositories: any;
   isLoading = true;
-  checked = true;
+  lightMode = true;
   displayedColumns: string[] = ['name', 'value', 'percent'];
 
   displayedColumnsTopRepos: string[] = ['owner', 'name', 'stargazers'];
@@ -85,16 +85,16 @@ export class DashboardComponent implements OnInit {
     this.years = Array.from({ length: new Date().getFullYear() - initialYear + 1 }, (val, index) => index + initialYear);
   }
 
-
-
-  ngOnInit() {}
-
-  ngAfterViewInit() {
+  ngOnInit() {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+    if (prefersDark.matches === this.lightMode) {
+      this.toggleDarkTheme(!prefersDark.matches);
+    }
   }
 
   onClickRepos(row: any): void {
-    console.log('onClickRepos', row);
-    // Open Dialog with Repositories informations
+    // console.log('onClickRepos', row);
+    // Open Dialog with Repositories information
     this.DialogReposComponentRef = this._matDialog.open(RepoInfoComponent, {
       width: '30%',
       panelClass: 'dialog-repos',
@@ -102,7 +102,13 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  toggleDarkTheme(checked: boolean) {
-    document.body.classList.toggle('dark-theme', checked);
+  toggleDarkTheme(light?: boolean) {
+    if (light !== undefined) {
+      this.lightMode = light;
+      document.body.classList.toggle("dark-theme", !light);
+    } else {
+      this.lightMode = !this.lightMode;
+      document.body.classList.toggle("dark-theme");
+    }
   }
 }

@@ -5,8 +5,8 @@
 
         <span class="spacer"></span>
 
-        <button mat-icon-button (click)="toggleDarkTheme(checked = !checked)">
-          <mat-icon>{{checked ? 'dark_mode' :  'light_mode'}}</mat-icon>
+        <button mat-icon-button (click)="toggleDarkTheme()">
+          <mat-icon>{{lightMode ? "dark_mode" : "light_mode"}}</mat-icon>
         </button>
 
       </mat-toolbar>
