@@ -12,17 +12,20 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Build Docker Image
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and push
+        id: docker_build
         uses: docker/build-push-action@v4
         with:
-          context: .
-          build-args: |
-            GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
           push: false
-          tags: github-languages-dashboard:1.0.0-${{ env.GITHUB_RUN_NUMBER }}
+          builder: ${{ steps.buildx.outputs.name }}
+          tags: "github-languages-dashboard:latest"
+          load: true
 
-      - name: Publish Docker Image
-        uses: actions/upload-artifact@v3
+      - name: Upload image
+        uses: ishworkh/docker-image-artifact-upload@v1
         with:
-          name: github-languages-dashboard-1.0.0-${{ env.GITHUB_RUN_NUMBER }}
-          path: github-languages-dashboard:1.0.0-${{ env.GITHUB_RUN_NUMBER }}
+          image: "github-languages-dashboard:latest"
