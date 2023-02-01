@@ -56,6 +56,14 @@ body {
 
 body.dark-theme {
   background-color: #303030;
+
+  mat-card-title {
+    color: #fff;
+  }
+
+  mat-card-content {
+    color: rgb(255, 255, 255, 0.7);
+  }
 }
 
 .pointer {

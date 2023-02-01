@@ -18,6 +18,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RepoInfoComponent } from './components/repo-info/repo-info.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {MatRippleModule} from "@angular/material/core";
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'),
     }),
+    MatRippleModule,
   ]
 })
 export class DashboardModule { }

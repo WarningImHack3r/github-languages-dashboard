@@ -1,7 +1,7 @@
 <main class="dashboard">
     <header class="header">
       <mat-toolbar color="primary">
-        <span>Github Dashboard</span>
+        <h3>Github Stats Dashboard</h3>
 
         <span class="spacer"></span>
 
@@ -16,8 +16,8 @@
 
       <mat-card class="top-repositories">
         <mat-card-header class="top-repositories-header">
-          <mat-card-title>Top des Repositories </mat-card-title>
-          <mat-card-subtitle>Card subtitle</mat-card-subtitle>
+          <mat-card-title>Top Repositories</mat-card-title>
+          <mat-card-subtitle>by number of stars</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content class="content">
           <div class="top-repositories-list">
@@ -32,7 +32,7 @@
               </ng-container>
               <ng-container matColumnDef="stargazers">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> <mat-icon>star</mat-icon> </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element.stargazers?.totalCount}}  </mat-cell>
+                  <mat-cell *matCellDef="let element"> {{(element.stargazers?.totalCount).toLocaleString("en-US")}} </mat-cell>
               </ng-container>
 
               <mat-header-row *matHeaderRowDef="displayedColumnsTopRepos;sticky:true"></mat-header-row>
@@ -65,7 +65,7 @@
 
                 <!-- 3. List of the top repositories -->
 
-                <!-- 4. Liscences of the top repositories -->
+                <!-- 4. Licences of the top repositories -->
 
             </mat-card-content>
         </mat-card>
@@ -73,19 +73,19 @@
         <mat-card>
             <mat-card-header class="top-ten-header">
                 <mat-card-title>Top 10 IDE</mat-card-title>
-                <mat-card-subtitle>Card subtitle</mat-card-subtitle>
+                <!--<mat-card-subtitle>Card subtitle</mat-card-subtitle>-->
             </mat-card-header>
             <mat-card-content  >
               <div class="top-languages-content">
                 <div class="list-languages">
-                    <!-- MatTablee -->
+                    <!-- MatTable -->
                      <mat-table  #SortTopLanguages="matSort" [dataSource]="dataSourceTopLanguages" matSort >
                          <ng-container matColumnDef="name">
                              <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
                              <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
                          </ng-container>
                          <ng-container matColumnDef="count">
-                             <mat-header-cell *matHeaderCellDef mat-sort-header> NumberOfUsed </mat-header-cell>
+                             <mat-header-cell *matHeaderCellDef mat-sort-header> Used </mat-header-cell>
                              <mat-cell *matCellDef="let element"> <span class="name">{{element.count}}</span> </mat-cell>
                          </ng-container>
                          <mat-header-row *matHeaderRowDef="displayedColumnsTopLanguages;sticky:true"></mat-header-row>
