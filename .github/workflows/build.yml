@@ -19,10 +19,10 @@ jobs:
           build-args: |
             GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
           push: false
-          tags: benjantoine/github-languages-dashboard:1.0.0-${{ env.GITHUB_RUN_NUMBER }}
+          tags: github-languages-dashboard:1.0.0-${{ env.GITHUB_RUN_NUMBER }}
 
       - name: Publish Docker Image
         uses: actions/upload-artifact@v3
         with:
-          name: github-languages-dashboard.tar
-          path: ./github-languages-dashboard.tar
+          name: github-languages-dashboard-1.0.0-${{ env.GITHUB_RUN_NUMBER }}
+          path: github-languages-dashboard:1.0.0-${{ env.GITHUB_RUN_NUMBER }}
