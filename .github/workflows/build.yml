@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+env:
+  IMAGE_NAME: github-languages-dashboard:1.0.0-${{ env.GITHUB_RUN_NUMBER }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,10 +17,16 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build Docker Image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           build-args: |
             GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
           push: false
-          tags: benjantoine/github-languages-dashboard:1.0.0-${{ env.GITHUB_RUN_NUMBER }}
+          tags: ${{ env.IMAGE_NAME }}
+
+      - name: Publish Docker Image
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.IMAGE_NAME }}.tar
+          path: ./${{ env.IMAGE_NAME }}.tar
