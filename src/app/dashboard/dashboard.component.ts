@@ -76,7 +76,7 @@ export class DashboardComponent implements OnInit {
       this._changeDetector.detectChanges();
     });
 
-    this.githubDataService.getMostUsedIDEs(100).subscribe( data => {
+    this.githubDataService.getMostUsedIDEs(100).subscribe(data => {
       console.log(data);
     });
 

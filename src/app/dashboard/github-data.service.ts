@@ -205,6 +205,142 @@ export class GithubDataService {
       })
     );
   }
+
+  getLanguagesCountOverTime(limit: number): Observable<any> {
+    // return an array that looks like [2022: {Java: 100, Swift: 200}, 2021: {Java: 98, PHP: 150}] etc.
+    return this.apollo.watchQuery<any>({
+      query: gql`
+        query($limit: Int!) {
+            search(query: "stars:>10000", type: REPOSITORY, first: $limit) {
+                nodes {
+                    ... on Repository {
+                        owner {
+                            login
+                        }
+                        name
+                        stargazers {
+                            totalCount
+                        }
+                        languages(first: 1) {
+                            nodes {
+                                name
+                            }
+                        }
+                        ref(qualifiedName: "main") {
+                            target {
+                                ... on Commit {
+                                    history {
+                                        nodes {
+                                            id
+                                            committedDate
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+      `,
+      variables: {
+        limit: limit
+      }}).valueChanges.pipe(
+      map(result => result.data["search"].nodes
+        .filter((repo: any) => repo.ref !== null)
+        .filter((repo: any) => repo.languages.nodes[0] !== undefined)
+        .map((repo: any) => {
+          return {
+            languages: repo.languages.nodes[0],
+            commits: repo.ref.target.history.nodes
+          };
+        }
+      ))
+    ).pipe(
+      map((repos: any) => {
+        const languages: any = {};
+        repos.forEach((repo: any) => {
+          repo.commits.forEach((commit: any) => {
+            const year = new Date(commit.committedDate).getFullYear();
+            if (languages[year]) {
+              if (languages[year][repo.languages.name]) {
+                languages[year][repo.languages.name] += 1;
+              } else {
+                languages[year][repo.languages.name] = 1;
+              }
+            } else {
+              languages[year] = {};
+              languages[year][repo.languages.name] = 1;
+            }
+          });
+        });
+        return languages;
+      }
+    ));
+  }
+
+  getNumberOfCommitsOverTime(limit: number): Observable<any> {
+    return this.apollo.watchQuery<any>({
+      query: gql`
+        query($limit: Int!) {
+          search(query: "stars:>10000", type: REPOSITORY, first: $limit) {
+            nodes {
+              ... on Repository {
+                owner {
+                  login
+                }
+                name
+                stargazers {
+                  totalCount
+                }
+                ref(qualifiedName: "main") {
+                  target {
+                    ... on Commit {
+                      history {
+                        nodes {
+                          id
+                          committedDate
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      `,
+      variables: {
+        limit: limit
+      }
+    }).valueChanges.pipe(
+      map(result => result.data["search"].nodes
+        .map((repo: any) => repo.ref)
+        .filter((ref: any) => ref !== null)
+        .map((ref: any) => ref.target.history.nodes)
+        .reduce((acc: any, nodes: any) => {
+          nodes.forEach((node: any) => {
+            const date = new Date(node.committedDate);
+            if (acc[date.getFullYear()]) {
+              acc[date.getFullYear()] += 1;
+            } else {
+              acc[date.getFullYear()] = 1;
+            }
+          });
+          return acc;
+        }, [])
+      ),
+      map((commits: any) => {
+        const years = Object.keys(commits);
+        return years.map((year: any) => {
+          return {
+            year: year,
+            count: commits[year]
+          };
+        });
+      })
+    );
+  }
 }
 
 export interface TopLanguagesDate {
