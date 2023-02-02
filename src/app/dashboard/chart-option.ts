@@ -3,8 +3,6 @@ import { EChartsOption } from 'echarts';
 
 export const Doughnut_Chartget: EChartsOption = {
   title: {
-    text: 'Top languages',
-    subtext: 'Frequency of languages of the top repositories',
     left: 'center'
   },
   tooltip: {
@@ -37,19 +35,21 @@ export const Stacked_Area_Chart: EChartsOption = {
     }
   },
   legend: {
-    data: ['X-1', 'X-2', 'X-3', 'X-4', 'X-5']
+    data: [],
+    bottom: 0,
+    padding: 10
   },
   grid: {
     left: '3%',
     right: '4%',
-    bottom: '3%',
+    bottom: '10%',
     containLabel: true
   },
   xAxis: [
     {
       type: 'category',
       boundaryGap: false,
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      data: []
     }
   ],
   yAxis: [
@@ -57,47 +57,7 @@ export const Stacked_Area_Chart: EChartsOption = {
       type: 'value'
     }
   ],
-  series: [
-    {
-      name: 'X-1',
-      type: 'line',
-      stack: 'counts',
-      areaStyle: {},
-      data: [120, 132, 101, 134, 90, 230, 210]
-    },
-    {
-      name: 'X-2',
-      type: 'line',
-      stack: 'counts',
-      areaStyle: {},
-      data: [220, 182, 191, 234, 290, 330, 310]
-    },
-    {
-      name: 'X-3',
-      type: 'line',
-      stack: 'counts',
-      areaStyle: {},
-      data: [150, 232, 201, 154, 190, 330, 410]
-    },
-    {
-      name: 'X-4',
-      type: 'line',
-      stack: 'counts',
-      areaStyle: {},
-      data: [320, 332, 301, 334, 390, 330, 320]
-    },
-    {
-      name: 'X-5',
-      type: 'line',
-      stack: 'counts',
-      label: {
-        show: true,
-        position: 'top',
-      },
-      areaStyle: {},
-      data: [820, 932, 901, 934, 1290, 1330, 1320]
-    }
-  ]
+  series: []
 };
 
 export const Gradient_Stacked_Area_Chart: EChartsOption = {
@@ -301,4 +261,95 @@ export const Basic_Area_Chart: EChartsOption = {
   ]
 };
 
+export const Point_Chart: EChartsOption = {
+  xAxis: {
+    splitLine: { show: false }
+  },
+   tooltip: {
+  trigger: 'item'
+  },
+  yAxis: {
+  },
+  visualMap: [
+    {
+      show: false,
+      type: 'piecewise',
+      categories: [],
+      dimension: 2,
+      inRange: {
+        color: ['#50a3ba', '#eac736', '#d94e5d']
+      },
+      outOfRange: {
+        color: ['#ccc']
+      },
+      top: 20,
+      textStyle: {
+        color: '#fff'
+      },
+      realtime: false
+    },
+    {
+      show: false,
+      dimension: 3,
+      max: 100,
+      inRange: {
+        colorLightness: [0.15, 0.6]
+      }
+    }
+  ],
+  series: [
+    {
+      zlevel: 1,
+      name: 'nutrients',
+      type: 'scatter',
+      data: [],
+      animationThreshold: 5000,
+      progressiveThreshold: 5000
+    }
+  ],
+  animationEasingUpdate: 'cubicInOut',
+  animationDurationUpdate: 2000
+};
 
+export const Disk_DATA: EChartsOption = {
+  title: {
+    left: 'center'
+  },
+  tooltip: {
+    trigger: 'item',
+  },
+  series: [
+    {
+      type: 'treemap',
+      visibleMin: 1,
+      label: {
+        show: true,
+        formatter: '{b}'
+      },
+      itemStyle: {
+        borderColor: '#fff'
+      },
+      levels: [
+        {
+          itemStyle: {
+            borderWidth: 0,
+            gapWidth: 5
+          }
+        },
+        {
+          itemStyle: {
+            gapWidth: 1
+          }
+        },
+        {
+          colorSaturation: [0.35, 0.5],
+          itemStyle: {
+            gapWidth: 1,
+            borderColorSaturation: 0.6
+          }
+        }
+      ],
+      data: [],
+    }
+  ]
+};

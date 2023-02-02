@@ -2,17 +2,21 @@
     <header class="header">
       <mat-toolbar color="primary">
         <h3>Github Stats Dashboard</h3>
-
         <span class="spacer"></span>
-
         <button mat-icon-button (click)="toggleDarkTheme()">
           <mat-icon>{{lightMode ? "dark_mode" : "light_mode"}}</mat-icon>
         </button>
 
       </mat-toolbar>
     </header>
-
     <section class="container">
+
+      <div class="top-languages-content">
+        <card-stats title="Top Repositories" color="#21543" subtitle="by number of stars" nameValue="{{topRepositories?.name}}" val="{{topRepositories?.stargazers}}"></card-stats>
+        <card-stats title="Top Language" color="#21543" subtitle="by number of used" nameValue="{{topLanguages?.name}}" val="{{topLanguages?.count}}"></card-stats>
+        <card-stats title="Top File" color="#21543" subtitle="by number of used" nameValue="{{topFile?.name}}" val="{{topFile?.count}}"></card-stats>
+        <card-stats title="Top Commit" color="#21543" subtitle="by number of repo count" nameValue="{{topCommits?.name}}" val="{{topCommits?.count}}"></card-stats>
+      </div>
 
       <mat-card class="top-repositories">
         <mat-card-header class="top-repositories-header">
@@ -41,68 +45,37 @@
               </mat-table>
               <mat-paginator #PaginatorTopRepos [length]="100" [pageSize]="10" showFirstLastButtons></mat-paginator>
             </div>
-            <div class="chart" echarts [options]="Doughnut_Chartget_TopLanguages" [loading]="isLoading" theme="macarons"></div>
+            <div class="chart">
+              <h1>Top languages of the Top Repositories</h1>
+              <p>Ecrit ici</p>
+              <div echarts [options]="Doughnut_Chartget_TopLanguages" [loading]="isLoading" theme="macarons"></div>
+            </div>
           </div>
          
-          <div>
+          <div class="chart">
+            <h1>Number of commits over time</h1>
+            <p>Ecrit ici</p>
             <div class="chart" echarts [options]="Chart_Commits" [loading]="isLoading" theme="macarons"></div>
           </div>
 
-          <div>
-            <div class="chart" echarts [options]="Area_Chart_Top_Languages" [loading]="isLoading" theme="macarons"></div>
+          <div class="chart">
+            <h1>Number of languages over time</h1>
+            <p>Ecrit ici</p>
+            <div echarts [options]="Area_Chart_Top_Languages" [loading]="isLoading" theme="macarons"></div>
           </div>
         </mat-card-content>
       </mat-card>
-
         <mat-card>
             <mat-card-header class="top-ten-header">
-                <mat-card-title>Top 10 Repositories</mat-card-title>
-                <mat-card-subtitle>Card subtitle</mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content >
-                <!-- 1. Multiple card inline (Top Issue / Top Fork / Top Pull Request) -->
-                <div class="top-languages-content">
-                    <card-stats title="Top Issue" [value]="200" />
-                    <card-stats title="Top Fork" [value]="200" />
-                    <card-stats title="Top Pull Request" [value]="200" />
-                    <card-stats title="Top Issue" [value]="200" />
-                </div>
-
-                <!-- 2. -->
-                <div class="apple-vs-android">
-                    <div echarts [options]="Doughnut_Chartget_AndroidvsApple" [loading]="isLoading" theme="macarons"></div>
-                </div>
-
-                <!-- 3. List of the top repositories -->
-
-                <!-- 4. Licences of the top repositories -->
-
-            </mat-card-content>
-        </mat-card>
-
-        <mat-card>
-            <mat-card-header class="top-ten-header">
-                <mat-card-title>Top 10 IDE</mat-card-title>
-                <!--<mat-card-subtitle>Card subtitle</mat-card-subtitle>-->
+                <mat-card-title><H1>Fun section</H1></mat-card-title>
             </mat-card-header>
             <mat-card-content  >
-              <div class="top-languages-content">
-                <div class="list-languages">
-                    <!-- MatTable -->
-                     <mat-table  #SortTopLanguages="matSort" [dataSource]="dataSourceTopLanguages" matSort >
-                         <ng-container matColumnDef="name">
-                             <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-                             <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-                         </ng-container>
-                         <ng-container matColumnDef="count">
-                             <mat-header-cell *matHeaderCellDef mat-sort-header> Used </mat-header-cell>
-                             <mat-cell *matCellDef="let element"> <span class="name">{{element.count}}</span> </mat-cell>
-                         </ng-container>
-                         <mat-header-row *matHeaderRowDef="displayedColumnsTopLanguages;sticky:true"></mat-header-row>
-                         <mat-row *matRowDef="let row; columns: displayedColumnsTopLanguages;"></mat-row>
-                     </mat-table>
-                     <mat-paginator #PaginatorTopLanguages [length]="18"  [pageSize]="10" showFirstLastButtons></mat-paginator>
-                 </div>
+              <div class="apple-vs-android">
+                <div echarts [options]="Doughnut_Chartget_AndroidvsApple" [loading]="isLoading" theme="macarons"></div>
+              </div>
+              <div class="apple-vs-android">
+                <h1>Representation of the files of the Top of the Repositories</h1>
+                <div echarts [options]="Disk_Chart_File_root" [loading]="isLoading" theme="macarons"></div>
               </div>
             </mat-card-content>
         </mat-card>

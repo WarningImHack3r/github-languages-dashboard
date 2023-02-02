@@ -117,7 +117,7 @@ export class GithubDataService {
     ));
   }
 
-  getMostUsedIDEs(limit: number): Observable<any> {
+  getFileAtRoot(limit: number): Observable<any> {
     return this.apollo.watchQuery<any>({
       query: gql`
         query($limit: Int!) {
@@ -151,36 +151,20 @@ export class GithubDataService {
         .map((repo: any) => repo.object)
         .filter((obj: any) => obj !== null)
         .map((obj: any) => obj.entries)
-        .reduce((acc: any, entries: any) => {
-          entries.forEach((entry: any) => {
-            if (entry.name === ".vscode") {
-              if (acc["VSCode"]) {
-                acc["VSCode"] += 1;
-              } else {
-                acc["VSCode"] = 1;
-              }
-            } else if (entry.name === ".idea") {
-              if (acc["IntelliJ"]) {
-                acc["IntelliJ"] += 1;
-              } else {
-                acc["IntelliJ"] = 1;
-              }
-            } else if (entry.name.endsWith(".xcodeproj")) {
-              if (acc["XCode"]) {
-                acc["XCode"] += 1;
-              } else {
-                acc["XCode"] = 1;
-              }
-            } else {
-              if (acc["Other"]) {
-                acc["Other"] += 1;
-              } else {
-                acc["Other"] = 1;
-              }
-            }
-          });
+        .reduce((acc: any[], entries: any[]) => {
+          acc.push(...entries);
           return acc;
-        }, {})
+        }
+        , [])
+        .reduce((acc: TopLanguagesDate[], entry: any) => {
+          const index = acc.findIndex((item: TopLanguagesDate) => item.name === entry.name);
+          if (index === -1) {
+            acc.push({ name: entry.name, count: 1 });
+          } else {
+            acc[index].count += 1;
+          }
+          return acc;
+        } , [])
       )
     );
   }
@@ -368,4 +352,9 @@ export interface TopLanguagesDate {
 export interface TopCommitOverTime {
   year: string;
   count: number;
+}
+
+export interface TopLanguagesOverTime {
+  year: string;
+  languages: TopLanguagesDate[];
 }
