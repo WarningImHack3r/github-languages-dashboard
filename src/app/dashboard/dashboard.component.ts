@@ -20,10 +20,14 @@ export class DashboardComponent implements OnInit {
   isLoading = true;
   lightMode = true;
 
+  TopSelected = 100;
+  TopSelecteds = [10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000];
+
   topRepositories: any;
-  topLanguages: any;
-  topFile: any;
-  topCommits: any;
+  topLanguages!: TopLanguagesDate;
+  topFile!: TopLanguagesDate;
+  topCommits!: TopCommitOverTime;
+  topLicenses!: TopLanguagesDate;
 
   displayedColumnsTopRepos: string[] = ['owner', 'name', 'stargazers'];
   dataSourceTopRepos = new MatTableDataSource<any>([{},{},{},{},{},{},{},{},{},{}]);
@@ -36,6 +40,7 @@ export class DashboardComponent implements OnInit {
   Chart_Commits: EChartsOption = Basic_Area_Chart;
   Area_Chart_Top_Languages: EChartsOption = Stacked_Area_Chart;
   Disk_Chart_File_root: EChartsOption = Disk_DATA;
+  Doughnut_Chartget_Licenses: EChartsOption = Doughnut_Chartget;
 
   years: number[];
   DialogReposComponentRef: any;
@@ -144,6 +149,19 @@ export class DashboardComponent implements OnInit {
           data: counts
         } as echarts.SeriesOption;
       });
+
+      this.githubDataService.getNumberOfLicensesUsage(100).subscribe((data: TopLanguagesDate[]) => {
+        const series = this.Doughnut_Chartget_Licenses.series as echarts.SeriesOption[];
+        series[0].data = data.map(d => ({ value: d.count, name: d.name }));
+        this.Doughnut_Chartget_Licenses.series = series;
+        this.Doughnut_Chartget_Licenses = { ...this.Doughnut_Chartget_Licenses };
+        this.isLoading = false;
+        this.topLicenses = data.reduce((prev: TopLanguagesDate, current: TopLanguagesDate) => {
+          return (prev.count > current.count) ? prev : current;
+        })
+        this._changeDetector.detectChanges();
+      });
+
 
       this.Area_Chart_Top_Languages.series = seriesData;
       this.Area_Chart_Top_Languages = { ...this.Area_Chart_Top_Languages };

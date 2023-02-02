@@ -117,3 +117,11 @@ mat-header-cell {
     padding-left: 16px
   }
 }
+
+.fun {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  gap: 32px;
+  margin: 32px;
+}
