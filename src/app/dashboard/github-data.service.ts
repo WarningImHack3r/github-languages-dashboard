@@ -207,7 +207,6 @@ export class GithubDataService {
   }
 
   getLanguagesCountOverTime(limit: number): Observable<any> {
-    // return an array that looks like [2022: {Java: 100, Swift: 200}, 2021: {Java: 98, PHP: 150}] etc.
     return this.apollo.watchQuery<any>({
       query: gql`
         query($limit: Int!) {
@@ -276,7 +275,25 @@ export class GithubDataService {
         });
         return languages;
       }
-    ));
+    )).pipe(
+      map((languages: any) => {
+        const languagesOverTime: any = [];
+        Object.keys(languages).forEach((year: any) => {
+          const languagesForYear: any = [];
+          Object.keys(languages[year]).forEach((language: any) => {
+            languagesForYear.push({
+              name: language,
+              count: languages[year][language]
+            });
+          });
+          languagesOverTime.push({
+            year: year,
+            languages: languagesForYear
+          });
+        });
+        return languagesOverTime;
+      })
+    );
   }
 
   getNumberOfCommitsOverTime(limit: number): Observable<any> {
