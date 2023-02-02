@@ -342,6 +342,55 @@ export class GithubDataService {
       })
     );
   }
+
+  getNumberOfLicensesUsage(limit: number): Observable<any> {
+    return this.apollo.watchQuery<any>({
+      query: gql`
+        query($limit: Int!) {
+          search(query: "stars:>10000", type: REPOSITORY, first: $limit) {
+            nodes {
+              ... on Repository {
+                owner {
+                  login
+                }
+                name
+                stargazers {
+                  totalCount
+                }
+                licenseInfo {
+                  name
+                }
+              }
+            }
+          }
+        }
+      `,
+      variables: {
+        limit: limit
+      }
+    }).valueChanges.pipe(
+      map(result => result.data["search"].nodes
+        .filter((repo: any) => repo.licenseInfo !== null)
+        .reduce((acc: any, repo: any) => {
+          if (acc[repo.licenseInfo.name]) {
+            acc[repo.licenseInfo.name] += 1;
+          } else {
+            acc[repo.licenseInfo.name] = 1;
+          }
+          return acc;
+        }, {})
+      ),
+      map((licenses: any) => {
+        const licensesNames = Object.keys(licenses);
+        return licensesNames.map((license: any) => {
+          return {
+            name: license,
+            count: licenses[license]
+          };
+        });
+      })
+    );
+  }
 }
 
 export interface TopLanguagesDate {
