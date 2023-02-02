@@ -22,7 +22,7 @@
       <mat-card class="top-repositories">
         <mat-card-header class="top-repositories-header">
           <mat-card-title>Top 100 Repositories</mat-card-title>
-          <mat-card-subtitle>by number of stars</mat-card-subtitle>
+          <mat-card-subtitle>by number of stars • Click the rows for details</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content >
           <div class="content">
@@ -40,49 +40,51 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header> <mat-icon>star</mat-icon> </mat-header-cell>
                     <mat-cell *matCellDef="let element"> {{(element.stargazers?.totalCount).toLocaleString("en-US")}} </mat-cell>
                 </ng-container>
-  
+
                 <mat-header-row *matHeaderRowDef="displayedColumnsTopRepos;sticky:true"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumnsTopRepos;" matRipple (click)="onClickRepos(row)"></mat-row>
               </mat-table>
               <mat-paginator #PaginatorTopRepos [length]="100" [pageSize]="10" showFirstLastButtons></mat-paginator>
             </div>
             <div class="chart">
-              <h1>Top languages of the Top Repositories</h1>
-              <p>Ecrit ici</p>
+              <h1>Most used languages</h1>
+              <p>Primary languages of top 100 repos</p>
               <div echarts [options]="Doughnut_Chartget_TopLanguages" [loading]="isLoading" theme="macarons"></div>
             </div>
           </div>
-         
+
           <div class="chart">
             <h1>Number of commits over time</h1>
-            <p>Ecrit ici</p>
+            <p>Total numbers across all top 100 repos</p>
             <div class="chart" echarts [options]="Chart_Commits" [loading]="isLoading" theme="macarons"></div>
           </div>
 
           <div class="chart">
-            <h1>Number of languages over time</h1>
-            <p>Ecrit ici</p>
+            <h1>Evolution of languages usage over time</h1>
+            <p>Primary language of repos over time</p>
             <div echarts [options]="Area_Chart_Top_Languages" [loading]="isLoading" theme="macarons"></div>
           </div>
         </mat-card-content>
       </mat-card>
         <mat-card>
             <mat-card-header>
-                <mat-card-title><H1>Fun section</H1></mat-card-title>
+                <mat-card-title><h1>Fun section</h1></mat-card-title>
             </mat-card-header>
             <mat-card-content  >
               <div class="fun">
                 <div>
-                  <h1>Representation Apple vs Android</h1>
+                  <h1>Apple languages vs Android languages</h1>
+                  <p>Objective-C/Objective-C++/Swift vs Java/Kotlin</p>
                   <div echarts [options]="Doughnut_Chartget_AndroidvsApple" [loading]="isLoading" theme="macarons"></div>
                 </div>
                 <div>
-                  <h1>Representation of Licencies</h1>
+                  <h1>Usage of licences</h1>
+                  <p>Across top 100 repos</p>
                   <div echarts [options]="Doughnut_Chartget_Licenses" [loading]="isLoading" theme="macarons"></div>
                 </div>
               </div>
               <div >
-                <h1>Representation of the files of the Top of the Repositories</h1>
+                <h1>Frequency of files at root of top 100 repositories</h1>
                 <div echarts [options]="Disk_Chart_File_root" [loading]="isLoading" theme="macarons"></div>
               </div>
             </mat-card-content>

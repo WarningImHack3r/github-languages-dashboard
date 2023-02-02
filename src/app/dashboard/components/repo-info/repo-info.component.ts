@@ -32,7 +32,7 @@ import { GithubDataService } from '../../github-data.service';
     :host {
       display: block;
       background-color: white;
-      box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       border-radius: 10px;
       overflow: hidden;
       height: 100%;
@@ -48,7 +48,7 @@ import { GithubDataService } from '../../github-data.service';
       .info {
         display: flex;
         flex-direction: column;
-        align-items: start;
+        align-items: flex-start;
         justify-content: center;
       }
 
@@ -56,13 +56,14 @@ import { GithubDataService } from '../../github-data.service';
         display: flex;
         flex-direction: row;
         align-items: center;
-        justify-content: start;
+        justify-content: flex-start;
       }
 
       .languages {
         display: flex;
-        flex-direction: row wrap;
-        align-items: start;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
         justify-content: center;
         gap: 10px;
       }

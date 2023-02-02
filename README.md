@@ -1,7 +1,7 @@
 # GitHub Languages Dashboard
 
 ## Introduction
-L'application Github-Languages-Dashboard a été conçue pour afficher des statistiques de base sur les 100 repos GitHub les plus populaires en fonction du nombre de stars. L'application permet d'avoir une vision claire des statistiques à travers différents graphiques, notamment un tableau listant les repos triées par stars décroissants, un camembert décrivant les langages principaux utilisés, un graphe montrant l'évolution des langages principaux en fonction des années, un graphe montrant l'évolution du nombre de commits par années, un camembert montrant l'utilisation des licenses, et enfin un camembert montrant l'IDE de chaque repo.
+L'application Github-Languages-Dashboard a été conçue pour afficher des statistiques de base sur les 100 repos GitHub les plus populaires en fonction du nombre de stars. L'application permet d'avoir une vision claire des statistiques à travers différents graphiques, notamment un tableau listant les repos triées par stars décroissants, un camembert décrivant les langages principaux utilisés, un graphe montrant l'évolution des langages principaux en fonction des années, un graphe montrant l'évolution du nombre de commits par années, un camembert montrant l'utilisation des licenses, et d'autres.
 
 ## Technologies et Outils utilisés
 L'application a été développée en utilisant Angular, un framework de développement front-end populaire avec une grande communauté. De plus, l'application a utilisé les bibliothèques et les frameworks tiers tels qu'Apollo, Echarts, GraphQL et Material pour les fonctionnalités de développement supplémentaires.

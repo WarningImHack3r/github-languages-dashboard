@@ -1,10 +1,16 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { GithubDataService, TopCommitOverTime, TopLanguagesDate, TopLanguagesOverTime } from './github-data.service';
+import {
+  GithubDataService,
+  TopCommitOverTime,
+  TopLanguagesDate,
+  TopLanguagesOverTime,
+  TopRepositories
+} from './github-data.service';
 import * as echarts from 'echarts';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { Basic_Area_Chart, Disk_DATA, Doughnut_Chartget, Point_Chart, Stacked_Area_Chart } from './chart-option';
+import { Basic_Area_Chart, Disk_DATA, Doughnut_Chartget, Stacked_Area_Chart } from './chart-option';
 import { MatDialog } from '@angular/material/dialog';
 import { RepoInfoComponent } from './components/repo-info/repo-info.component';
 
@@ -19,15 +25,11 @@ export class DashboardComponent implements OnInit {
   repositories: any;
   isLoading = true;
   lightMode = true;
-
-  TopSelected = 100;
-  TopSelecteds = [10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000];
-
-  topRepositories: any;
-  topLanguages!: TopLanguagesDate;
-  topFile!: TopLanguagesDate;
-  topCommits!: TopCommitOverTime;
-  topLicenses!: TopLanguagesDate;
+  topRepositories?: TopRepositories;
+  topLanguages?: TopLanguagesDate;
+  topFile?: TopLanguagesDate;
+  topCommits?: TopCommitOverTime;
+  topLicenses?: TopLanguagesDate;
 
   displayedColumnsTopRepos: string[] = ['owner', 'name', 'stargazers'];
   dataSourceTopRepos = new MatTableDataSource<any>([{},{},{},{},{},{},{},{},{},{}]);
@@ -59,14 +61,12 @@ export class DashboardComponent implements OnInit {
       this.dataSourceTopRepos.paginator = this.paginatorTopRepos;
       this.dataSourceTopRepos.sort = this.sortTopRepos;
 
-      // this.topRepositories = result.Max((x: { stargazers: any; }) => x.stargazers);
-
       // get best repo by stargazers
-      // Math.max(...array.map(o => o.y))
-      console.log
-      this.topRepositories = result.map((x: { owner: { login: any; }; stargazers: { totalCount: any; }; }) => {
-        return {name: x.owner.login, stargazers: x.stargazers.totalCount}
-      }).reduce((prev: { stargazers: number; }, current: { stargazers: number; }) => (prev.stargazers > current.stargazers) ? prev : current)
+      this.topRepositories = result.map((x: any) => {
+        return {name: x.owner.login, stargazers: x.stargazers.totalCount};
+      }).reduce((prev: TopRepositories, current: TopRepositories) => {
+        return (prev.stargazers > current.stargazers) ? prev : current;
+      });
     });
 
     this.githubDataService.getTopLanguages(100).subscribe((data: TopLanguagesDate[]) => {

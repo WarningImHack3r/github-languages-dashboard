@@ -393,6 +393,11 @@ export class GithubDataService {
   }
 }
 
+export interface TopRepositories {
+  name: string;
+  stargazers: number;
+}
+
 export interface TopLanguagesDate {
   name: string;
   count: number;
