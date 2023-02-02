@@ -16,31 +16,41 @@
 
       <mat-card class="top-repositories">
         <mat-card-header class="top-repositories-header">
-          <mat-card-title>Top Repositories</mat-card-title>
+          <mat-card-title>Top 100 Repositories</mat-card-title>
           <mat-card-subtitle>by number of stars</mat-card-subtitle>
         </mat-card-header>
-        <mat-card-content class="content">
-          <div class="top-repositories-list">
-            <mat-table [dataSource]="dataSourceTopRepos" #SortTopRepos="matSort" matSort>
-              <ng-container matColumnDef="owner">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header> Owner </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element.owner?.login}} </mat-cell>
-              </ng-container>
-              <ng-container matColumnDef="name">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> <span class="name">{{element.name}}</span> </mat-cell>
-              </ng-container>
-              <ng-container matColumnDef="stargazers">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header> <mat-icon>star</mat-icon> </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{(element.stargazers?.totalCount).toLocaleString("en-US")}} </mat-cell>
-              </ng-container>
-
-              <mat-header-row *matHeaderRowDef="displayedColumnsTopRepos;sticky:true"></mat-header-row>
-              <mat-row *matRowDef="let row; columns: displayedColumnsTopRepos;" matRipple (click)="onClickRepos(row)"></mat-row>
-            </mat-table>
-            <mat-paginator #PaginatorTopRepos [length]="100" [pageSize]="10" showFirstLastButtons></mat-paginator>
+        <mat-card-content >
+          <div class="content">
+            <div class="top-repositories-list">
+              <mat-table [dataSource]="dataSourceTopRepos" #SortTopRepos="matSort" matSort>
+                <ng-container matColumnDef="owner">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Owner </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.owner?.login}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> <span class="name">{{element.name}}</span> </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="stargazers">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> <mat-icon>star</mat-icon> </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{(element.stargazers?.totalCount).toLocaleString("en-US")}} </mat-cell>
+                </ng-container>
+  
+                <mat-header-row *matHeaderRowDef="displayedColumnsTopRepos;sticky:true"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumnsTopRepos;" matRipple (click)="onClickRepos(row)"></mat-row>
+              </mat-table>
+              <mat-paginator #PaginatorTopRepos [length]="100" [pageSize]="10" showFirstLastButtons></mat-paginator>
+            </div>
+            <div class="chart" echarts [options]="Doughnut_Chartget_TopLanguages" [loading]="isLoading" theme="macarons"></div>
           </div>
-          <div class="chart" echarts [options]="Doughnut_Chartget_TopLanguages" [loading]="isLoading" theme="macarons"></div>
+         
+          <div>
+            <div class="chart" echarts [options]="Chart_Commits" [loading]="isLoading" theme="macarons"></div>
+          </div>
+
+          <div>
+            <div class="chart" echarts [options]="Area_Chart_Top_Languages" [loading]="isLoading" theme="macarons"></div>
+          </div>
         </mat-card-content>
       </mat-card>
 

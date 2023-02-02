@@ -1,10 +1,10 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { GithubDataService, TopLanguagesDate } from './github-data.service';
+import { GithubDataService, TopCommitOverTime, TopLanguagesDate } from './github-data.service';
 import * as echarts from 'echarts';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { Doughnut_Chartget } from './chart-option';
+import { Basic_Area_Chart, Doughnut_Chartget, Stacked_Area_Chart } from './chart-option';
 import { MatDialog } from '@angular/material/dialog';
 import { RepoInfoComponent } from './components/repo-info/repo-info.component';
 
@@ -33,6 +33,8 @@ export class DashboardComponent implements OnInit {
 
   Doughnut_Chartget_TopLanguages: EChartsOption = Doughnut_Chartget;
   Doughnut_Chartget_AndroidvsApple: EChartsOption = Doughnut_Chartget;
+  Chart_Commits: EChartsOption = Basic_Area_Chart;
+  Area_Chart_Top_Languages: EChartsOption = Stacked_Area_Chart;
 
   years: number[];
   DialogReposComponentRef: any;
@@ -77,6 +79,26 @@ export class DashboardComponent implements OnInit {
     });
 
     this.githubDataService.getMostUsedIDEs(100).subscribe(data => {
+      console.log(data);
+    });
+
+    this.githubDataService.getNumberOfCommitsOverTime(100).subscribe((data: TopCommitOverTime[]) => {
+      this.Chart_Commits.xAxis = { data: data.map(d => d.year) };
+      this.Chart_Commits.title = { text: 'Number of commits over time' };
+      const series = this.Chart_Commits.series as echarts.SeriesOption[];
+      series[0].data = data.map(d => d.count);
+      this.Chart_Commits.series = series;
+      this.Chart_Commits = { ...this.Chart_Commits };
+      this.isLoading = false;
+      this._changeDetector.detectChanges();
+    });
+
+    this.githubDataService.getLanguagesCountOverTime(100).subscribe(data => {
+      // this.Area_Chart_Top_Languages.xAxis = { data: data.map(d => d.year) };
+      // this.Area_Chart_Top_Languages.title = { text: 'Number of languages over time' };
+      // const series = this.Area_Chart_Top_Languages.series as echarts.SeriesOption[];
+      // series[0].data = data.map(d => d.count);
+      // this.Area_Chart_Top_Languages.series = series;
       console.log(data);
     });
 

@@ -279,3 +279,26 @@ export const Gradient_Stacked_Area_Chart: EChartsOption = {
     }
   ]
 };
+
+export const Basic_Area_Chart: EChartsOption = {
+  xAxis: {
+    type: 'category',
+    boundaryGap: false,
+    data: []
+  },
+  yAxis: {
+    type: 'value'
+  },
+  tooltip: {
+    trigger: 'item'
+  },
+  series: [
+    {
+      data: [],
+      type: 'line',
+      areaStyle: {}
+    }
+  ]
+};
+
+

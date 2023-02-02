@@ -347,3 +347,8 @@ export interface TopLanguagesDate {
   name: string;
   count: number;
 }
+
+export interface TopCommitOverTime {
+  year: string;
+  count: number;
+}
